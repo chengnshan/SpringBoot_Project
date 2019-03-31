@@ -1,0 +1,31 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /jpa/
+spring:
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect  #不加这句则默认为myisam引擎
+    properties:
+      hibernate:
+      #格式化输出的sql语句
+        format_sql: true
+    open-in-view: true
+  datasource:
+    url: jdbc:mysql://192.168.1.160:3306/springdatajpa?useUnicode=true&characterEncoding=utf-8
+    password: 123456
+    username: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    database: 0
+    host: 192.168.1.160
+    jedis:
+      pool:
+        max-active: 50
+        max-idle: 20
+        min-idle: 10
+        max-wait: 60s
+
