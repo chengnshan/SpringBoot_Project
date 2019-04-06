@@ -1,7 +1,7 @@
 package com.cxp.springbootjpa.controller;
 
-import com.cxp.springbootjpa.dao.oneToMany_double.ClassRoomDoubleDao;
-import com.cxp.springbootjpa.dao.oneToMany_double.StudentInfoDoubleDao;
+import com.cxp.springbootjpa.dao.repository.oneToMany_double.ClassRoomDoubleRepository;
+import com.cxp.springbootjpa.dao.repository.oneToMany_double.StudentInfoDoubleRepository;
 import com.cxp.springbootjpa.entity.oneToMany_double.ClassRoomDouble;
 import com.cxp.springbootjpa.entity.oneToMany_double.StudentInfoDouble;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import java.util.Set;
 public class StudentInfoDoubleController {
 
     @Autowired
-    private StudentInfoDoubleDao studentInfoDoubleDao;
+    private StudentInfoDoubleRepository studentInfoDoubleDao;
 
     @Autowired
-    private ClassRoomDoubleDao classRoomDoubleDao;
+    private ClassRoomDoubleRepository classRoomDoubleDao;
 
     @RequestMapping(value = "/getStudentInfoDouble")
     public Set<StudentInfoDouble> getStudentInfoDouble(){
