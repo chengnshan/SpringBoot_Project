@@ -11,6 +11,7 @@
 
     <modules>
         <module>springboot-jpa</module>
+        <module>springboot-mybatis</module>
     </modules>
 
 </project>
