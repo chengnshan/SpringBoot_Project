@@ -12,6 +12,7 @@
     <modules>
         <module>springboot-jpa</module>
         <module>springboot-mybatis</module>
+        <module>springboot-elasticsearch</module>
     </modules>
 
 </project>
