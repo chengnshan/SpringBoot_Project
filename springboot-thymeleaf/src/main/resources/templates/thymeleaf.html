@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--在html中添加xmlns:th="http://www.thymeleaf.org" ,可避免编辑器出现html验证错误，这不是必须的-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf使用</title>
+</head>
+<body>
+
+    <div>
+
+        <div>
+            <input type="text" value="lisi" th:value="${name}"/>
+        </div>
+        <!--在div中输出字符串-->
+        <div th:text="${name}" >张三</div>
+
+        <!--输出对象中的属性值-->
+        <div>
+            生日日期: <span th:text="${paramMap.birthday}">xx</span>
+            ,地址:<span th:text="${paramMap.address}">xx</span>
+        </div>
+
+        <br/>
+
+        <div>
+            <!--输出集合(遍历)-->
+            <table>
+                <tr>
+                    <td>序号</td>
+                    <td>图书名称</td>
+                    <td>价格</td>
+                </tr>
+
+                <!--
+                    bk的名字是自己随便起的，bk存储遍历获取的元素
+                    iter对象的属性有:
+                        index:当前迭代对象的index（从0开始计算）
+                        count: 当前迭代对象的index(从1开始计算)
+                        size:被迭代对象的大小
+                        current:当前迭代变量
+                        even/odd:布尔值，当前循环是否是偶数/奇数（从0开始计算）
+                        first:布尔值，当前循环是否是第一个
+                        last:布尔值，当前循环是否是最后一个
+                -->
+                <tr th:each="bk,item:${list}">
+                    <td th:text="${item.count}"></td>
+                    <td th:text="${bk.bookName}"></td>
+                    <td th:text="${bk.bookPrice}"></td>
+                </tr>
+            </table>
+        </div>
+
+
+
+    </div>
+
+</body>
+</html>
