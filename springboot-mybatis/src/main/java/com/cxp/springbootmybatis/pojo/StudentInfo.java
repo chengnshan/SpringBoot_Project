@@ -1,5 +1,6 @@
 package com.cxp.springbootmybatis.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,8 @@ public class StudentInfo implements Serializable {
     private Integer id;
     private String name;
     private Integer age;
+
+    @JsonFormat(pattern="YYYY-MM-dd")
     private Date birthday;
     private String address;
 }
