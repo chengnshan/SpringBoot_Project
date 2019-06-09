@@ -9,16 +9,16 @@
 
     <div>
 
+        <!--在div中输出字符串-->
+        <div th:text="${name}" >张三</div>
         <div>
             <input type="text" value="lisi" th:value="${name}"/>
         </div>
-        <!--在div中输出字符串-->
-        <div th:text="${name}" >张三</div>
 
         <!--输出对象中的属性值-->
         <div>
-            生日日期: <span th:text="${paramMap.birthday}">xx</span>
-            ,地址:<span th:text="${paramMap.address}">xx</span>
+            <p>生日日期: <span th:text="${#calendars.format(paramMap.birthday,'yyyy-MM-dd HH:mm:ss')}">xx</span></p>
+            <p>地址:<span th:text="${paramMap.address}">xx</span></p>
         </div>
 
         <br/>

@@ -1,6 +1,7 @@
 package com.cxp.springbootthymeleaf.controller;
 
 import com.cxp.springbootthymeleaf.Book;
+import com.cxp.springbootthymeleaf.utils.Base64AndImageUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,7 +16,7 @@ import java.util.*;
 @Controller
 public class ThymeleafController {
 
-    @RequestMapping(value = "/toThymeleafPage")
+    @RequestMapping(value = "/toThymeleafPage.html")
     public String toThymeleafPage(ModelMap map){
         map.put("name","大鹏");
 
@@ -34,5 +35,14 @@ public class ThymeleafController {
 
 
         return "thymeleaf";
+    }
+
+    @RequestMapping(value = "/toUploadImageByBase64.html")
+    public String toUploadImageByBase64(ModelMap map){
+
+        String base64 = Base64AndImageUtil.imageToBase64("/Volumes/Passport_2/学习练习文件/微信小程序/001-helloworld/images/timg.jpg");
+        map.put("base64",base64);
+
+        return "uploadImage";
     }
 }
