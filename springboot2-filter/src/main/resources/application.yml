@@ -1,0 +1,11 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /filter
+spring:
+  #访问路径
+  mvc:
+    static-path-pattern: /static/**
+  #映射路径
+  resources:
+    static-locations: classpath:/static/**

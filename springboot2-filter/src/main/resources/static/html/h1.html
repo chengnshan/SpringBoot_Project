@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        #dialog_pic {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 100;
+            display: none;
+        }
+
+        .dialog-body {
+            width: 90%;
+            max-height: 800px;
+            margin: 0 auto;
+            padding: 10px;
+            border-radius: 5px;
+            background: black;
+            overflow: auto;
+        }
+    </style>
+
+    <script type="text/javascript" src="../js/jquery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            console.log('生效了');
+
+            $('.result_pics').on('click', 'img.zoom', function() {
+                var $dialog = $('#dialog_pic');  //这里的dialog_pic是整个大图的显示区域（请注意，这里之只有采用变量赋值的方式是为了下面的代码看起来很简洁，方便自己，方便他人）
+                $dialog.show();
+
+                // outerHeight声明了整个窗口的高度
+                // 此处的代码通过上面的图片，我已经标注出来了相应的区域部分。整个页面减去大图片显示区域从上到图片的最底边所产生的距离，然后除2就可以实现图片的放大居中了。
+                var marginTop = ($dialog.outerHeight() - $('.dialog-body', $dialog).outerHeight()) / 2;
+                $('.dialog-body', $dialog).css({
+                    marginTop: marginTop
+                });
+            });
+
+            // 点击显示的大图，触发事件，当触发当前页面内里任何处位置，就会隐藏显示的大图
+            $('.result_pics').on('click', '#dialog_pic', function() {
+                $(this).hide();
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+    <div>
+        <h1>图片</h1>
+        <div class="result_pics">
+            <div id="dialog_pic" style="display: none;">
+                <div class="dialog-body" style="margin-top: 231px;">
+                    <img src="../images/lion.jpg"/>
+                </div>
+            </div>
+            <div class="waterfall_stream_pic">
+                <div class="item">
+                    <img class="zoom" src="../images/lion.jpg" style="width: 300px;height: 200px;"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

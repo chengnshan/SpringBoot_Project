@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>springboot中跨域测试</title>
+
+    <script type="text/javascript" src="../static/js/jquery/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(document).on("click","#btn1",function () {
+
+                $.ajax({
+                    url : 'http://localhost:8088/filter/cors/corsOrignDataFilter',
+                    type : 'POST',
+                    dataType : 'json',
+                    data : {'name':'张三丰'},
+                    contentType : 'application/x-www-form-urlencoded',
+                    success : function (data) {
+                        console.log(data);
+                        $('#corsinput').val(JSON.stringify(data));
+                    }
+                });
+            });
+
+            $(document).on("click","#btn2",function () {
+
+                $.ajax({
+                    url : 'http://localhost:8088/filter/anno/corsOrignDataAnnotation',
+                    type : 'POST',
+                    dataType : 'json',
+                    data : {'name':'黄药师'},
+                    contentType : 'application/x-www-form-urlencoded',
+                    success : function (data) {
+                        console.log(data);
+                        $('#corsinput2').val(JSON.stringify(data));
+                    }
+                });
+            });
+
+            $(document).on("click","#btn3",function () {
+
+                $.ajax({
+                    url : 'http://localhost:8088/filter/extends/corsOrignDataExtends',
+                    type : 'POST',
+                    dataType : 'json',
+                    data : {'name':'洪七公'},
+                    contentType : 'application/x-www-form-urlencoded',
+                    success : function (data) {
+                        console.log(data);
+                        $('#corsinput3').val(JSON.stringify(data));
+                    }
+                });
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <input type="text" name="corsinput" id="corsinput"/>
+        <br/>
+        <input type="button" id="btn1" value="过滤器跨域请求" style="width: 65px;height: 50px;"/>
+    </div>
+
+    <div>
+        <input type="text" name="corsinput2" id="corsinput2"/>
+        <br/>
+        <input type="button" id="btn2" value="注解CrossOrigin跨域请求" style="width: 65px;height: 50px;"/>
+    </div>
+
+    <div>
+        <input type="text" name="corsinput3" id="corsinput3"/>
+        <br/>
+        <input type="button" id="btn3" value="继承CorsFilter跨域请求" style="width: 65px;height: 50px;"/>
+    </div>
+
+</body>
+</html>
