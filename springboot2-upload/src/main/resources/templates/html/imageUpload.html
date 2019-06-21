@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<!--在html中添加xmlns:th="http://www.thymeleaf.org" ,可避免编辑器出现html验证错误，这不是必须的-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+        <form th:action="@{/fileUpload}" th:method="post" th:enctype="${'multipart/form-data'}">
+            <label>上传图片</label>
+            <input type="file" name="file"/>
+            <input type="submit" value="上传"/>
+        </form>
+        <p>图片:</p>
+        <img th:src="@{${filename}}" style="width: 600px;height: 400px;">
+    </div>
+</body>
+</html>

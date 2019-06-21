@@ -23,7 +23,7 @@ public class MyWebMvcConfigurer implements WebMvcConfigurer {
     }
 
     /**
-     * 添加静态资源文件，外部可以直接访问地址
+     * 添加静态资源文件，外部可以直接访问地址 或 在配置文件中配置
      * @param registry
      */
     /*@Override

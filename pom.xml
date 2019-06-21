@@ -15,6 +15,7 @@
         <module>springboot-elasticsearch</module>
         <module>springboot-thymeleaf</module>
         <module>springboot2-filter</module>
+        <module>springboot2-upload</module>
     </modules>
 
 </project>
