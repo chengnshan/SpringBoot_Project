@@ -16,6 +16,8 @@
         <module>springboot-thymeleaf</module>
         <module>springboot2-filter</module>
         <module>springboot2-upload</module>
+        <module>springboot2-redis</module>
+        <module>springboot2-websocket</module>
     </modules>
 
 </project>
