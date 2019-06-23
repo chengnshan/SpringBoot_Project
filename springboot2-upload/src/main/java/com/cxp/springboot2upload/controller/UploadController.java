@@ -42,7 +42,7 @@ public class UploadController {
         // 后缀名
         String suffixName = fileName.substring(fileName.lastIndexOf("."));
         fileName = UUID.randomUUID() + suffixName;
-        File dest = new File(uploadPath+fileName);
+        File dest = new File(uploadPath,fileName);
         if (!dest.getParentFile().exists()){
             dest.getParentFile().mkdirs();
         }
