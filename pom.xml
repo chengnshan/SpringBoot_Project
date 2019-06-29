@@ -18,6 +18,7 @@
         <module>springboot2-upload</module>
         <module>springboot2-redis</module>
         <module>springboot2-websocket</module>
+        <module>springboot2-rabbitmq</module>
     </modules>
 
 </project>
