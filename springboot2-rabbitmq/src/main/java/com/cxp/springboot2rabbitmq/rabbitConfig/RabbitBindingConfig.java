@@ -36,6 +36,14 @@ public class RabbitBindingConfig {
     private Queue headersQueue;
 
     @Autowired
+    @Qualifier(value = "fanoutQueue1")
+    private Queue fanoutQueue1;
+
+    @Autowired
+    @Qualifier(value = "fanoutQueue2")
+    private Queue fanoutQueue2;
+
+    @Autowired
     @Qualifier(value = "directExchange")
     private DirectExchange directExchange;
 
@@ -46,6 +54,10 @@ public class RabbitBindingConfig {
     @Autowired
     @Qualifier(value = "headersExchange")
     private HeadersExchange headersExchange;
+
+    @Autowired
+    @Qualifier(value = "fanoutExchange")
+    private FanoutExchange fanoutExchange;
 
     @Value(value = "${custom.rabbitmq.directRoutingKey}")
     private String directRoutingKey;
@@ -87,5 +99,15 @@ public class RabbitBindingConfig {
         Map<String,Object> map = new HashMap<>();
         map.put("x-headers",header);
         return BindingBuilder.bind(headersQueue).to(headersExchange).whereAll(map).match();
+    }
+
+    @Bean
+    public Binding fanoutBinding1(){
+        return BindingBuilder.bind(fanoutQueue1).to(fanoutExchange);
+    }
+
+    @Bean
+    public Binding fanoutBinding2(){
+        return BindingBuilder.bind(fanoutQueue2).to(fanoutExchange);
     }
 }

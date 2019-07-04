@@ -37,6 +37,12 @@ public class RabbitQueueConfig {
     @Value(value = "${custom.rabbitmq.queue.headers}")
     private String headersQueue;
 
+    @Value(value = "${custom.rabbitmq.queue.fanout1}")
+    private String fanoutQueue1;
+
+    @Value(value = "${custom.rabbitmq.queue.fanout2}")
+    private String fanoutQueue2;
+
     @Bean(name = "directQueue")
     public Queue directQueue(){
         /**
@@ -78,5 +84,15 @@ public class RabbitQueueConfig {
     @Bean(name = "headersQueue")
     public Queue headersQueue(){
         return new Queue(headersQueue,true,false,false,null);
+    }
+
+    @Bean(name = "fanoutQueue1")
+    public Queue fanoutQueue1(){
+        return new Queue(fanoutQueue1,true,false,false,null);
+    }
+
+    @Bean(name = "fanoutQueue2")
+    public Queue fanoutQueue2(){
+        return new Queue(fanoutQueue2,true,false,false,null);
     }
 }

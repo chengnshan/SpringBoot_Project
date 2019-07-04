@@ -22,8 +22,24 @@ spring:
       simple:
         retry:
           enabled: true #消费者端的重试
+          max-attempts: 5  #尝试消费消息的次数
+          initial-interval: 2000ms #消费者重复消费一条消息的尝试时间间隔
+          stateless: true  #重试是无状态的还是有状态的
         acknowledge-mode: manual
         prefetch: 1
+        auto-startup: true
+        #concurrency设置的是对每个listener在初始化的时候设置的并发消费者的个数
+        concurrency: 2
+        max-concurrency: 4
+    template:
+      reply-timeout: 10000ms
+      retry:
+        enabled: true #设置为true的时候RabbitTemplate(生产端)能够实现重试
+        initial-interval: 2000ms #第一次与第二次发布消息的时间间隔
+        max-attempts: 5   #尝试发布消息的最大数量
+        max-interval: 10000ms  #尝试发布消息的最大时间间隔 10000
+        multiplier: 2.0 #一次尝试时间间隔的乘数
+
   datasource:
     url: jdbc:mysql://192.168.153.128:3306/springboot2-project?useUnicode=true&characterEncoding=utf-8
     username: root
@@ -37,10 +53,13 @@ custom:
       topic1: topicQueue1
       topic2: topicQueue2
       headers: headersQueue
+      fanout1: fanoutQueue1
+      fanout2: fanoutQueue2
     exchange:
       direct: directExchange
       topic: topicExchange
       header: headersExchange
+      fanout: fanoutExchange
     directRoutingKey: key.direct
     topicRoutingKey1: key.topic
     #其中路由键中*代表一个字符，#代表一个或多个字符

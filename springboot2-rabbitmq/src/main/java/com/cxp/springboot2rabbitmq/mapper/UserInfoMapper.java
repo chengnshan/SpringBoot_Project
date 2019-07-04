@@ -1,6 +1,6 @@
 package com.cxp.springboot2rabbitmq.mapper;
 
-import com.cxp.springboot2rabbitmq.pojo.UserInfo;
+import com.cxp.springboot2rabbitmq.rabbitConsumer.pojo.UserInfo;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;

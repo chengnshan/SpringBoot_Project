@@ -1,6 +1,7 @@
 package com.cxp.springboot2rabbitmq.rabbitConfig;
 
 import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.HeadersExchange;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +31,11 @@ public class RabbitExchangeConfig {
     @Value(value = "${custom.rabbitmq.exchange.header}")
     private String headersExchange;
 
+    @Value(value = "${custom.rabbitmq.exchange.fanout}")
+    private String fanoutExchange;
+
     /**
-     * direct类型交换机
+     * direct Exchange类型交换机
      * @return
      */
     @Bean(value = "directExchange")
@@ -40,7 +44,7 @@ public class RabbitExchangeConfig {
     }
 
     /**
-     * topic类型交换机
+     * topic Exchange类型交换机
      * @return
      */
     @Bean(name = "topicExchange")
@@ -49,7 +53,7 @@ public class RabbitExchangeConfig {
     }
 
     /**
-     * headers类型交换机
+     * headers Exchange类型交换机
      * @return
      */
     @Bean(name = "headersExchange")
@@ -57,4 +61,12 @@ public class RabbitExchangeConfig {
         return new HeadersExchange(headersExchange,true,false,null);
     }
 
+    /**
+     * Fanout Exchange类型交换机
+     * @return
+     */
+    @Bean(name = "fanoutExchange")
+    public FanoutExchange fanoutExchange(){
+        return new FanoutExchange(fanoutExchange,true,false,null);
+    }
 }

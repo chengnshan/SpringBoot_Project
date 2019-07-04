@@ -1,4 +1,4 @@
-package com.cxp.springboot2rabbitmq.pojo;
+package com.cxp.springboot2rabbitmq.rabbitConsumer.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,7 +29,7 @@ public class UserInfo implements Serializable {
     private Date birthday;
     private String jobs;
 
-    public UserInfo(Integer id,String userName,String passWord,String userSex,String nickName,Date birthday){
+    public UserInfo(Integer id, String userName, String passWord, String userSex, String nickName, Date birthday){
         this.id = id;
         this.userName = userName;
         this.userSex = userSex;
