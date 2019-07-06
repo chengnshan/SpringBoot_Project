@@ -23,7 +23,8 @@ public class UserInfoMapperTest {
     @Test
     public void findUserInfoList() {
         UserInfo userInfo = new UserInfo();
-        userInfo.setUserName("李灿世");
+        //userInfo.setUserName("李灿世");
+        userInfo.setId(1);
         List<UserInfo> userInfoList = userInfoMapper.findUserInfoList(userInfo);
         System.out.println("结果： "+userInfoList);
     }

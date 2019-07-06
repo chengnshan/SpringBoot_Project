@@ -35,12 +35,12 @@ public class RabbitConfig {
 
         DefaultJackson2JavaTypeMapper jackson2JavaTypeMapper = new DefaultJackson2JavaTypeMapper();
         jackson2JavaTypeMapper.setIdClassMapping(idClassMapping);
+        jackson2JavaTypeMapper.setTrustedPackages("*");
 
         //在jackson2JsonMessageConverter转换器中指定映射配置
         jackson2JsonMessageConverter.setJavaTypeMapper(jackson2JavaTypeMapper);
 
         return jackson2JsonMessageConverter;
     }
-
 
 }
