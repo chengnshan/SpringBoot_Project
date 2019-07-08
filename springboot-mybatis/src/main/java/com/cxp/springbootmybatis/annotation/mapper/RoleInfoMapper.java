@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * 通用mapper https://github.com/abel533/Mapper/wiki/1.integration
+ * 注解复杂映射 https://www.jianshu.com/p/7f2a160ca97d
  * @author 程
  * @date 2019/7/8 上午11:46
  */
