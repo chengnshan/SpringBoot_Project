@@ -15,4 +15,6 @@ public interface StudentInfoMapper {
     public List<StudentInfo> findStudentByObj(StudentInfo studentInfo);
 
     public StudentInfo getStudentById(Integer id);
+
+    public List<StudentInfo> findStudentInfoLsitByClassesId(String classesId);
 }

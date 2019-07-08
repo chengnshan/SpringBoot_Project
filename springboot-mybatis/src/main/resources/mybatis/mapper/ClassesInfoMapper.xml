@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cxp.springbootmybatis.xml.mapper.ClassesInfoMapper">
+    
+    <resultMap id="resultMap" type="com.cxp.springbootmybatis.xml.pojo.ClassesInfo">
+        <id property="id" column="id" />
+        <result property="classesId" column="classes_id"/>
+        <result property="classesName" column="classes_name"/>
+       <collection property="stus" column="classes_id"
+                   select="com.cxp.springbootmybatis.xml.mapper.StudentInfoMapper.findStudentInfoLsitByClassesId"
+                   fetchType="lazy"></collection>
+    </resultMap>
+
+    <sql id="baseColumn">
+        id,classes_id,classes_name 
+    </sql>
+    
+    <select id="findClassesInfoList" parameterType="com.cxp.springbootmybatis.xml.pojo.ClassesInfo"
+            resultMap="resultMap">
+      select  <include refid="baseColumn" /> from  classes_info
+        <where>
+            <if test=" id != null and id > 0">
+                and id = #{id}
+            </if>
+            <if test="classesId != null and classesId != '' ">
+                and classes_id = #{classesId}
+            </if>
+            <if test="classesName != null and classesName != '' ">
+                and classes_name = #{classesName}
+            </if>
+        </where>
+          order by id asc
+    </select>
+    
+    <select id="getClassesInfoByClassesId" parameterType="string" resultMap="resultMap">
+        select  <include refid="baseColumn" /> from  classes_info
+        where classes_id = #{classesId}
+    </select>
+
+</mapper>

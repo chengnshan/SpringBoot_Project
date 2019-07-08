@@ -9,10 +9,14 @@
         <result column="age" property="age" jdbcType="INTEGER"/>
         <result column="birthday" property="birthday" jdbcType="DATE"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="classes_id" property="classesId" jdbcType="VARCHAR"/>
+        <association property="classesInfo"
+                     select="com.cxp.springbootmybatis.xml.mapper.ClassesInfoMapper.getClassesInfoByClassesId"
+                     column="classes_id" fetchType="lazy"></association>
     </resultMap>
 
     <sql id="baseColumn">
-        id,name,age,birthday,address
+        id,name,age,birthday,address,classes_id
     </sql>
 
     <select id="findStudentByObj" parameterType="com.cxp.springbootmybatis.xml.pojo.StudentInfo" resultMap="studentBaseMap">
@@ -34,6 +38,12 @@
                 and birthday = #{birthday, jdbcType=DATE}
             </if>
         </where>
+        order  by id asc
+    </select>
+    
+    <select id="findStudentInfoLsitByClassesId" parameterType="string" resultMap="studentBaseMap">
+        select <include refid="baseColumn"/> from student_info
+        where classes_id = #{classesId}
     </select>
 
 </mapper>

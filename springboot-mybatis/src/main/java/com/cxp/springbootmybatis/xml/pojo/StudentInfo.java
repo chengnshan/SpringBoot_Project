@@ -26,4 +26,7 @@ public class StudentInfo implements Serializable {
     @JsonFormat(pattern="YYYY-MM-dd")
     private Date birthday;
     private String address;
+    private String classesId;
+
+    private ClassesInfo classesInfo;
 }
