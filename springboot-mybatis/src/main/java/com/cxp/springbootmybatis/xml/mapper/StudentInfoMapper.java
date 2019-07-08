@@ -1,6 +1,6 @@
-package com.cxp.springbootmybatis.mapper;
+package com.cxp.springbootmybatis.xml.mapper;
 
-import com.cxp.springbootmybatis.pojo.StudentInfo;
+import com.cxp.springbootmybatis.xml.pojo.StudentInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,4 +13,6 @@ import java.util.List;
 public interface StudentInfoMapper {
 
     public List<StudentInfo> findStudentByObj(StudentInfo studentInfo);
+
+    public StudentInfo getStudentById(Integer id);
 }

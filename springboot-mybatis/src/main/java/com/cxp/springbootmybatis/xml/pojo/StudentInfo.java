@@ -1,4 +1,4 @@
-package com.cxp.springbootmybatis.pojo;
+package com.cxp.springbootmybatis.xml.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

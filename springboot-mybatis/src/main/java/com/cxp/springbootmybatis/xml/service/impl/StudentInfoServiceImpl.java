@@ -1,8 +1,8 @@
-package com.cxp.springbootmybatis.service.impl;
+package com.cxp.springbootmybatis.xml.service.impl;
 
-import com.cxp.springbootmybatis.mapper.StudentInfoMapper;
-import com.cxp.springbootmybatis.pojo.StudentInfo;
-import com.cxp.springbootmybatis.service.StudentInfoService;
+import com.cxp.springbootmybatis.xml.mapper.StudentInfoMapper;
+import com.cxp.springbootmybatis.xml.pojo.StudentInfo;
+import com.cxp.springbootmybatis.xml.service.StudentInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

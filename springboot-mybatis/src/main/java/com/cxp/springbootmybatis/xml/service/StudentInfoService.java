@@ -1,6 +1,6 @@
-package com.cxp.springbootmybatis.service;
+package com.cxp.springbootmybatis.xml.service;
 
-import com.cxp.springbootmybatis.pojo.StudentInfo;
+import com.cxp.springbootmybatis.xml.pojo.StudentInfo;
 
 import java.util.List;
 

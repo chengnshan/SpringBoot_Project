@@ -1,7 +1,7 @@
-package com.cxp.springbootmybatis.controller;
+package com.cxp.springbootmybatis.xml.controller;
 
-import com.cxp.springbootmybatis.pojo.StudentInfo;
-import com.cxp.springbootmybatis.service.StudentInfoService;
+import com.cxp.springbootmybatis.xml.pojo.StudentInfo;
+import com.cxp.springbootmybatis.xml.service.StudentInfoService;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -35,5 +35,9 @@
             </if>
         </where>
     </select>
+    
+    <select id="getStudentById" parameterType="Integer" resultMap="studentBaseMap">
+        select <include refid="baseColumn"/> from student_info where id = #{id}
+    </select>
 
 </mapper>

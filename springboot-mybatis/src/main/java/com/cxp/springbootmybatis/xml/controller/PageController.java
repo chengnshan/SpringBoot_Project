@@ -1,4 +1,4 @@
-package com.cxp.springbootmybatis.controller;
+package com.cxp.springbootmybatis.xml.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
