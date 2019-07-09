@@ -20,7 +20,7 @@ import java.util.Date;
 public class StudentInfo implements Serializable {
 
     private Integer id;
-    private String name;
+    private String stuName;
     private Integer age;
 
     @JsonFormat(pattern="YYYY-MM-dd")

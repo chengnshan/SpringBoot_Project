@@ -5,7 +5,7 @@
 
     <resultMap type="com.cxp.springbootmybatis.xml.pojo.StudentInfo" id="studentBaseMap">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
         <result column="age" property="age" jdbcType="INTEGER"/>
         <result column="birthday" property="birthday" jdbcType="DATE"/>
         <result column="address" property="address" jdbcType="VARCHAR"/>
@@ -16,7 +16,7 @@
     </resultMap>
 
     <sql id="baseColumn">
-        id,name,age,birthday,address,classes_id
+        id,stu_name,age,birthday,address,classes_id
     </sql>
 
     <select id="findStudentByObj" parameterType="com.cxp.springbootmybatis.xml.pojo.StudentInfo" resultMap="studentBaseMap">
@@ -25,8 +25,8 @@
             <if test="id != null">
                 id = #{id}
             </if>
-            <if test=" name != null and name != '' ">
-                and name = #{name}
+            <if test=" stuName != null and stuName != '' ">
+                and stu_name = #{stuName}
             </if>
             <if test=" age != null ">
                 and age = #{age}
@@ -46,4 +46,23 @@
         where classes_id = #{classesId}
     </select>
 
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List" >
+        insert into student_info (stu_name,age,birthday,address,classes_id)
+        values
+        <foreach collection="list" item="item" separator="," >
+            (
+             #{item.stuName},#{item.age},#{item.birthday},#{item.address},#{item.classesId}
+            )
+        </foreach>
+    </insert>
+
+    <!--批量删除-->
+    <delete id="deleteBatch">
+        delete from student_info
+        where stu_name 
+        <foreach collection="stuNames" open="in ( " separator="," close=")" item="item" index="index">
+            #{item.stuName}
+        </foreach>
+    </delete>
 </mapper>
