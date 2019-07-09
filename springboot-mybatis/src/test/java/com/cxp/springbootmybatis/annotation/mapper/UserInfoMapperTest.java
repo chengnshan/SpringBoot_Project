@@ -8,7 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -40,5 +42,13 @@ public class UserInfoMapperTest {
     //    userInfoMapper.updateByPrimaryKey(userInfo);
 
     //    userInfoMapper.insertUserInfo(userInfo);
+    }
+
+    @Test
+    public void batchInsertUserInfo(){
+        List<UserInfo> userInfos = new ArrayList<>();
+        userInfos.add(new UserInfo(null,"PENGXU001","123","男","彭旭",new Date(),"B端组员",null));
+        userInfos.add(new UserInfo(null,"WANGSHUHANG001","321","男","王顺航",new Date(),"B端组员",null));
+        System.out.println(userInfoMapper.batchInsertUserInfo(userInfos));
     }
 }

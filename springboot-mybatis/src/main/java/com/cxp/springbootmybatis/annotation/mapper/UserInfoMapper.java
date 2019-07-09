@@ -68,4 +68,19 @@ public interface UserInfoMapper extends tk.mybatis.mapper.common.Mapper<UserInfo
     @Insert(value = "insert into user_info (user_name,pass_word,user_sex,nick_name,birthday,jobs) " +
             " values (#{userName},#{passWord},#{userSex},#{nickName},#{birthday},#{jobs})")
     public int insertUserInfo(UserInfo userInfo);
+
+
+    /**
+     * 批量插入
+     * @param userInfos
+     * @return
+     */
+    @Insert(value = "<script>" +
+            " insert into user_info (user_name,pass_word,user_sex,nick_name,birthday,jobs) " +
+            " values " +
+            " <foreach collection=\"list\" item=\"item\" separator=\",\" >" +
+            " ( #{item.userName},#{item.passWord},#{item.userSex},#{item.nickName},#{item.birthday},#{item.jobs})" +
+            " </foreach> " +
+            "</script>")
+    public int batchInsertUserInfo(List<UserInfo> userInfos);
 }
