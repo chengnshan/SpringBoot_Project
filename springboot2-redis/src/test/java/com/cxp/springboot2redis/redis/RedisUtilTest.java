@@ -25,6 +25,10 @@ public class RedisUtilTest {
     @Qualifier(value = "redisTemplateObj")
     private RedisTemplate redisTemplateObj;
 
+    @Autowired
+    @Qualifier(value = "redisTemplateJson")
+    private RedisTemplate redisTemplateJson;
+
     @Test
     public void test1(){
     //    System.out.println(RedisUtil.zsetAdd("zset1", "aaa", 1));
@@ -34,9 +38,22 @@ public class RedisUtilTest {
     }
 
     @Test
-    public void test2(){
+    public void testString(){
         redisTemplateObj.opsForValue().set("userInfo1",
                 new UserInfo(1,"aaa","bbb","ccc","ddd",new Date()));
         System.out.println(redisTemplateObj.opsForValue().get("userInfo1"));
+    }
+
+    @Test
+    public void testHash(){
+        Boolean hasKey = RedisUtil.hasKey("test_hash");
+        if (hasKey){
+            System.out.println(redisTemplateJson.opsForHash().get("test_hash","userName"));
+            System.out.println(RedisUtil.hgetObj("test_hash",UserInfo.class));
+        }else {
+            RedisUtil.hsetObj("test_hash",
+                    new UserInfo(2,"张三丰","123456","男",
+                            "张真人",new Date()));
+        }
     }
 }
