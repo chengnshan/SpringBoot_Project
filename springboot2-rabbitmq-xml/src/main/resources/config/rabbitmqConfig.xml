@@ -1,0 +1,96 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/rabbit
+   http://www.springframework.org/schema/rabbit/spring-rabbit.xsd
+   http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans.xsd
+   http://www.springframework.org/schema/context
+   https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder file-encoding="UTF-8" location="config/rabbitmq-mac.properties"/>
+
+    <!-- 定义RabbitMQ的连接工厂 -->
+    <bean id="connectionFactory"
+          class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+        <constructor-arg value="${rabbit.hosts}"/>
+        <property name="username" value="${rabbit.username}"/>
+        <property name="password" value="${rabbit.password}"/>
+        <property name="virtualHost" value="${rabbit.virtualHost}"/>
+        <property name="channelCacheSize" value="5"/>
+    </bean>
+
+    <!-- MQ的管理，包括队列、交换器等 -->
+    <rabbit:admin connection-factory="connectionFactory" />
+
+    <!--消息转换器-->
+    <bean id="jsonMessageConverter"
+          class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter">
+        <property name="javaTypeMapper">
+            <bean class="org.springframework.amqp.support.converter.DefaultJackson2JavaTypeMapper">
+                <property name="idClassMapping">
+                    <map>
+                        <entry key="UserInfo" value="com.cxp.springboot2rabbitmqxml.pojo.UserInfo"></entry>
+                    </map>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+
+    <rabbit:queue id="topicQueue2" name="topicQueue2" durable="true" auto-delete="false"
+                  exclusive="false" />
+
+    <!-- 消费者部分 -->
+    <!-- 自定义接口类 -->
+    <bean id="topicListener" class="com.cxp.springboot2rabbitmqxml.rabbitConsumer.TopicListener" />
+
+    <!--配置监听acknowledeg="manual"设置手动应答
+       concurrency="20"设置发送次数,最多发送30次
+   -->
+    <rabbit:listener-container connection-factory="connectionFactory" acknowledge="manual"
+                               concurrency="2" prefetch="1" >
+        <rabbit:listener ref="topicListener" queues="topicQueue2"></rabbit:listener>
+    </rabbit:listener-container>
+
+
+    <!--自定义监听方法-->
+    <bean id="directListener" class="com.cxp.springboot2rabbitmqxml.rabbitConsumer.DirectListener"/>
+    <!--自定义监听适配器-->
+    <bean id="directAdapter" class="com.cxp.springboot2rabbitmqxml.rabbitConfig.CustomMessageListenerAdapter">
+        <constructor-arg ref="directListener"/>
+        <!--设置处理器的消费消息的默认方法-->
+        <property name="defaultListenerMethod" value="onMessage"/>
+        <property name="messageConverter" ref="jsonMessageConverter"></property>
+        <property name="retryTemplate">
+            <bean class="org.springframework.retry.support.RetryTemplate">
+                <property name="retryPolicy" >
+                    <bean class="org.springframework.retry.policy.SimpleRetryPolicy">
+                        <!--消费者消费失败尝试次数-->
+                        <property name="maxAttempts" value="5"/>
+                    </bean>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="simpleMessageListenerContainer"
+          class="org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="queueNames" value="directQueue"/>
+        <property name="messageListener" ref="directAdapter"/>
+        <property name="acknowledgeMode" value="MANUAL" />
+        <!--prefetch是每次从一次性从broker里面取的待消费的消息的个数-->
+        <property name="prefetchCount" value="1" />
+        <!--concurrency设置的是对每个listener在初始化的时候设置的并发消费者的个数-->
+        <property name="concurrency" value="2" />
+        <property name="concurrentConsumers" value="5" />
+    </bean>
+
+
+    <bean id="rabbitTemplate" class="org.springframework.amqp.rabbit.core.RabbitTemplate">
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="messageConverter" ref="jsonMessageConverter"/>
+    </bean>
+</beans>
