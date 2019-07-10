@@ -16,7 +16,6 @@ import java.util.Map;
  * @author 程
  * @date 2019/7/6 上午9:02
  */
-
 @Configuration
 public class DLXConfig {
 
@@ -29,7 +28,7 @@ public class DLXConfig {
         Map<String,Object> args = new HashMap<>();
         args.put("x-dead-letter-exchange","user.order.real.exchange");
         args.put("x-dead-letter-routing-key","user.order.real.routingkey");
-        args.put("x-message-ttl","30000");
+        args.put("x-message-ttl",30000);
         return new Queue("user.order.dead.queue",true,false,false,args);
     }
 

@@ -10,6 +10,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +96,7 @@ public class DirectConsumer {
     @RabbitHandler
     public String directMessage(Map<String,Object> userMap, Channel channel, Message message) throws Exception{
         if (!CollectionUtils.isEmpty(userMap)){
-            userMap.keySet().forEach(key -> System.out.println(key + " -> " +userMap.get(key)));
+            userMap.keySet().forEach(key -> System.out.println("directMessage : "+ key + " -> " +userMap.get(key)));
         }
         try {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
@@ -108,5 +109,16 @@ public class DirectConsumer {
             channel.basicNack(message.getMessageProperties().getDeliveryTag(),false,true);
         }
         return null;
+    }
+
+    @RabbitHandler
+    public String directMessageJPG(File file, Channel channel, Message message){
+        System.out.println("directMessageJPG : "+ file.getName());
+        try {
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "消费者收到JPG消息";
     }
 }

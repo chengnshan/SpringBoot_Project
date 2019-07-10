@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
  * @date 2019/7/6 上午9:23
  */
 
-@Controller
 public class DLXProducer {
 
 

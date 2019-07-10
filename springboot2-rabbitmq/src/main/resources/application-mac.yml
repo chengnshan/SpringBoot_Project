@@ -11,8 +11,11 @@ spring:
     username: admin
     password: admin
     virtual-host: /
+    dynamic: true #是否创建AmqpAdmin bean. 默认为: true)
+    #生产端
     publisher-confirms: true  # 开启发送确认
     publisher-returns: true # 开启发送失败退回
+    #消费端
     listener:
       direct:
         acknowledge-mode: manual  # 开启ACK
@@ -26,11 +29,16 @@ spring:
           initial-interval: 2000ms #消费者重复消费一条消息的尝试时间间隔
           stateless: true  #重试是无状态的还是有状态的
         acknowledge-mode: manual
+        # 指定一个请求能处理多少个消息，如果有事务的话，必须大于等于transaction数量.
         prefetch: 1
+        #指定一个事务处理的消息数量，最好是小于等于prefetch的数量.
+        transaction-size: 1
         auto-startup: true
         #concurrency设置的是对每个listener在初始化的时候设置的并发消费者的个数
         concurrency: 2
+        #指定最大的消费者数量.
         max-concurrency: 4
+
     template:
       reply-timeout: 10000ms
       retry:
@@ -39,6 +47,8 @@ spring:
         max-attempts: 5   #尝试发布消息的最大数量
         max-interval: 10000ms  #尝试发布消息的最大时间间隔 10000
         multiplier: 2.0 #一次尝试时间间隔的乘数
+      mandatory: true
+
 
   datasource:
     url: jdbc:mysql://192.168.153.128:3306/springboot2-project?useUnicode=true&characterEncoding=utf-8
@@ -66,3 +76,10 @@ custom:
     topicRoutingKey2: key.#
     header: header_value
 
+jpg:
+  file:
+    path: /Volumes/Passport_2/study_practice_file/images/to/
+#此外一定是配置消费端实体类所在包,才能映射成功
+scan:
+  idClass:
+    packageName: com.cxp.springboot2rabbitmq.rabbitConsumer.pojo

@@ -1,9 +1,11 @@
 package com.cxp.springboot2rabbitmq.rabbitProducer.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -26,6 +28,7 @@ public class UserInfo implements Serializable {
     private String passWord;
     private String userSex;
     private String nickName;
+    @JsonFormat(pattern = "YYYY-MM-dd HH:mm:ss")
     private Date birthday;
     private String jobs;
 
