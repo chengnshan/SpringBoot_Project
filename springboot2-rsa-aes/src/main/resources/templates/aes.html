@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--在html中添加xmlns:th="http://www.thymeleaf.org" ,可避免编辑器出现html验证错误，这不是必须的-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf使用</title>
+
+    <script type="text/javascript" th:src="@{static/js/aes.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/pad-zeropadding.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/security.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/crypto-js.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/jquery-1.9.1.min.js}"></script>
+</head>
+<body>
+
+    <button id="select" onclick="sendData();">触发</button>
+
+</body>
+<script type="text/javascript">
+    function sendData() {
+        alert(Encrypt(JSON.stringify({username:'张三'})));
+        $.ajax({
+            type:'POST',
+            url:'/RSAAES/save',
+            data: Encrypt(JSON.stringify({username:'张三'})),
+            dataType: 'json',
+            contentType: 'application/json',
+            success:function (resData) {
+                console.log(resData);
+            }
+        });
+    }
+
+    /**
+     * 加密（需要先加载lib/aes/aes.min.js文件）
+     * @param word
+     * @returns {*}
+     */
+    function Encrypt(word){
+        var key = CryptoJS.enc.Utf8.parse("abcdefghijklmnop");
+        var srcs = CryptoJS.enc.Utf8.parse(word);
+        var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+        return encrypted.toString();
+    }
+
+    /**
+     * 解密
+     * @param word
+     * @returns {*}
+     */
+    function Decrypt(word){
+        var key = CryptoJS.enc.Utf8.parse("abcdefghijklmnop");
+        var decrypt = CryptoJS.AES.decrypt(word, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+        return CryptoJS.enc.Utf8.stringify(decrypt).toString();
+    }
+</script>
+</html>
