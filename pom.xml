@@ -19,6 +19,9 @@
         <module>springboot2-redis</module>
         <module>springboot2-websocket</module>
         <module>springboot2-rabbitmq</module>
+        <module>springboot2-rabbitmq-xml</module>
+        <module>springboot2-Jasypt</module>
+        <module>springboot2-rsa-aes</module>
     </modules>
 
 </project>
