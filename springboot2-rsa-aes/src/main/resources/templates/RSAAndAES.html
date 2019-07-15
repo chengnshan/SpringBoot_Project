@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--在html中添加xmlns:th="http://www.thymeleaf.org" ,可避免编辑器出现html验证错误，这不是必须的-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf使用</title>
+
+    <script type="text/javascript" th:src="@{static/js/aes.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/pad-zeropadding.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/security.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/crypto-js.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/jsencrypt.min.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/jquery-1.9.1.min.js}"></script>
+</head>
+<body>
+
+
+<h2>服务端公钥：</h2>
+<textarea id="servicePublicKey" rows="5" cols="125">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJ9s1qlOyv9qpuaTqauW6fUftzE50rVk3yVPZwv1aO1Ch/XSEz76xCwkyvqpaqceRXrPpdBmO5+ruJ+I8osOHo7L5GWEOcMOO+8izp9hXKBBrmRMD4Egpn00k9DhVIEKp/vyddZPS/doxB8onhN6poTJDLdFLFVEicMf52caN9GQIDAQAB
+</textarea>
+<h2>客户端私钥：</h2>
+<textarea id="clientPrivateKey" rows="5" cols="125">MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAL2KSsvFr9yAtldC6AFAWF3EI9CYRn2P2Fp2trzUyoDGZGRzd4XBE4AeT/7f1+GYPCC2MT/Dhw7pcNpsv+aLlXfuKgHJLVCmi8XxmUmDP9GO9XdMRqe/GW6uJ1eU1N853jm4L35OZHYPNGTmnblTUXvjAXsrYpIa/aDKpm+23Gt/AgMBAAECgYBqtFMdWsKBkZiVkZ4JLk9RIl3DTibJA1UawKBpuCX0zzuvbW3JSAQRaX9BjoT7hPe8trUNH6eGFpeo7/Ys9UIEU61c33Q49NBPEVXH2+PhefIE74b8/H9cu1iYQyn9NSGKt0clo5/CU2G3OA7h+xqD9b7ifd4+DtdrS3KDpTPa0QJBAPhBkdpomvIWmUfI69WerwZHrzMZEFYHThG9SbWw0UgIjdKmSiQmrXawPZLe/o3BxPSIIXDzxiVAimdjVJcfC4kCQQDDc9nUvbLt4TryCfnR7x2KECh3BDEv/cuw/e67m0HYOdooV4KQ4aVous/TbbpcyPGcC180XCHjF11gqVa6hdTHAkBpEJcBsDOjMR093DKy/a1lIwFqxri7L+xCZbHES0jHC5e6BtZp5lSTXpMwjV997vvD4bkFbKX3LhFlIAy0yFbBAkAgvjC43gqypS+9yoQKcldtgKV2wsIGuyq7fN7YmPrf4Vk1tutNoC+YqusUDWbSEmu/a3xIhkK7C3f+MIAyASeTAkEA6CalrJUYBeDcaSHKhmJIceQ7baf8Q7uMYY5gRYuQ4rGudcXXaLi+o2I9f9in5qxE/SM/y9LuBmkzrCuy0tlNXA==
+</textarea>
+<input type="button" id="bt" value="提交" />
+
+
+</body>
+<script type="text/javascript">
+    $('#bt').click(function () {
+        // 获取16位随机数,当做aes秘钥key
+        var randomStr = randomString(16);
+        // aes加密
+        var data = Encrypt(JSON.stringify({username:"前端消息加密",password:"123abc"}),randomStr);
+        // rsa加密,传递给服务端的数据
+        var encrypt = new JSEncrypt();
+        encrypt.setPublicKey($("#servicePublicKey").val());
+        var encrypted = encrypt.encrypt(randomStr);
+        // 创建json对象
+        var json = {
+            "requestData": data,
+            "encrypted": encrypted
+        };
+
+        $.ajax({
+            type:'POST',
+            url:'/RSAAES/testEncrypt',
+            data: JSON.stringify(json),
+            dataType: 'json',
+            contentType: 'application/json',
+            success:function (resData) {
+                console.log(resData);
+                // RSA解密,获取到AES秘钥
+                var decrypt = new JSEncrypt();
+                decrypt.setPrivateKey($('#clientPrivateKey').val());
+                var aesKey = decrypt.decrypt(resData.encrypted);
+                // 用AES秘钥进行解密
+                var resultData = Decrypt(resData.requestData,aesKey);
+                console.log("解密的数据：" + resultData);
+            }
+        });
+    });
+
+    /**
+     * 加密（aes.js文件）
+     * @param word
+     * @returns {*}
+     */
+    function Encrypt(word,pwd){
+        var key = CryptoJS.enc.Utf8.parse(pwd);
+        var srcs = CryptoJS.enc.Utf8.parse(word);
+        var encrypted = CryptoJS.AES.encrypt(srcs, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+        return encrypted.toString();
+    }
+
+    /**
+     * 解密
+     * @param word
+     * @returns {*}
+     */
+    function Decrypt(word,pwd){
+        var key = CryptoJS.enc.Utf8.parse(pwd);
+        var decrypt = CryptoJS.AES.decrypt(word, key, {mode:CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+        return CryptoJS.enc.Utf8.stringify(decrypt).toString();
+    }
+
+    function randomString(len) {
+        len = len || 32;
+        var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+        var maxPos = $chars.length;
+        var pwd = '';
+        for (i = 0; i < len; i++) {
+            pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        return pwd;
+    }
+</script>
+</html>
