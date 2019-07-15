@@ -22,6 +22,7 @@
         <module>springboot2-rabbitmq-xml</module>
         <module>springboot2-Jasypt</module>
         <module>springboot2-rsa-aes</module>
+        <module>springboot2-cros</module>
     </modules>
 
 </project>
