@@ -27,10 +27,14 @@
         <module>springboot2-rabbitmq</module>
         <module>springboot2-rabbitmq-xml</module>
         <module>springboot2-Jasypt</module>
+        <module>springboot2-multidatasource</module>
         <module>springboot2-rsa-aes</module>
         <module>springboot2-cros</module>
         <module>springboot2-shiro</module>
         <module>springboot2-actuator</module>
+        <module>springboot2-zookeeper</module>
+        <module>springboot2-kafka</module>
+        <module>springboot2-kafka-basic</module>
     </modules>
 
 </project>
