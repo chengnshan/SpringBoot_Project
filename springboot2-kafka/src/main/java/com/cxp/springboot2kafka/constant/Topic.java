@@ -11,4 +11,6 @@ public class Topic {
     public static final String SIMPLE="spring.boot.kafka.simple";
     public static final String BEAN="spring.boot.kafka.bean";
 
+    public static final String REPLY="spring.boot.kafka.reply";
+    public static final String REPLYRETURN="spring.boot.kafka.reply.return";
 }

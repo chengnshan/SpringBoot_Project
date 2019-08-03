@@ -23,7 +23,6 @@ public class KafKaCustomrProducer {
     private KafkaTemplate kafkaTemplate;
 
     public void sendMessage(String topic, Object object) {
-
         /*
          * 这里的ListenableFuture类是spring对java原生Future的扩展增强,是一个泛型接口,用于监听异步方法的回调
          * 而对于kafka send 方法返回值而言，这里的泛型所代表的实际类型就是 SendResult<K, V>,而这里K,V的泛型实际上

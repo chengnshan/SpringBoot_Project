@@ -64,11 +64,11 @@ public class KafkaGroupConsumer {
     }
 
     // 分组2 中的消费者
-    @KafkaListener(id = "consumer2-1", groupId = "group2", topics = {Topic.GROUP,Topic.SIMPLE})
+    @KafkaListener(id = "consumer2-1", groupId = "group2", topics = {Topic.GROUP})
     public void consumer2_1(ConsumerRecord<String, Object> record) {
         System.err.println("consumer2-1 收到消息:" + record.value());
         try {
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
