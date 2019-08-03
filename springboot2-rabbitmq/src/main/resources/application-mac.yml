@@ -6,7 +6,7 @@ spring:
   application:
     name: springboot2-rabbitmq
   rabbitmq:
-    host: 192.168.153.128
+    host: 192.168.153.136
     port: 5672
     username: admin
     password: admin
@@ -49,9 +49,8 @@ spring:
         multiplier: 2.0 #一次尝试时间间隔的乘数
       mandatory: true
 
-
   datasource:
-    url: jdbc:mysql://192.168.153.128:3306/springboot2-project?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://192.168.153.136:3306/springboot2-project?useUnicode=true&characterEncoding=utf-8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -64,3 +64,9 @@ Json消息转换器(Jackson2JsonMessageConverter)注意：
 生产者既可以指定java对象全称，又可以是映射的key。如果消费者没有配置映射key，则只能指定java对象全称。
 
 
+RabbitMQ死信队列
+    什么是死信呢？什么样的消息会变成死信呢？
+        1、消息被拒绝（basic.reject或basic.nack）并且requeue=false.
+        2、消息TTL过期。
+        3、队列达到最大长度（队列满了，无法再添加数据到mq中）。
+

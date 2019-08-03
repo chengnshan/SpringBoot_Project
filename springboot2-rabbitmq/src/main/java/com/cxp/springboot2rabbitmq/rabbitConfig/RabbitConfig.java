@@ -78,6 +78,10 @@ public class RabbitConfig {
         return jackson2JsonMessageConverter;
     }
 
+    /**
+     * 两个对象继承自同一接口autowire-candidate="false" 表示该对象不参与自动注入
+     * @return
+     */
     @Bean(autowireCandidate = false)
     public JPGMessageConverter jpgMessageConverter(){
         JPGMessageConverter jpgMessageConverter = new JPGMessageConverter();
