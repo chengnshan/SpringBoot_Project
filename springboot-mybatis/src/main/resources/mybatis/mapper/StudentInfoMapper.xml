@@ -12,7 +12,7 @@
         <result column="classes_id" property="classesId" jdbcType="VARCHAR"/>
         <association property="classesInfo"
                      select="com.cxp.springbootmybatis.xml.mapper.ClassesInfoMapper.getClassesInfoByClassesId"
-                     column="classes_id" fetchType="lazy"></association>
+                     column="classes_id" fetchType="eager" ></association>
     </resultMap>
 
     <sql id="baseColumn">
@@ -23,7 +23,7 @@
         select <include refid="baseColumn"/> from student_info 
         <where>
             <if test="id != null">
-                id = #{id}
+                and id = #{id}
             </if>
             <if test=" stuName != null and stuName != '' ">
                 and stu_name = #{stuName}

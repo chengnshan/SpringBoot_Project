@@ -1,0 +1,32 @@
+
+
+
+
+发现问题：
+com.fasterxml.jackson.databind.exc.InvalidDefinitionException: No serializer found for class org.hibernate.proxy.pojo.
+javassist.JavassistLazyInitializer and no properties discovered to create BeanSerializer (to avoid exception, disable
+SerializationFeature.FAIL_ON_EMPTY_BEANS) (through reference chain: com.xwj.entity.UserEntity_$$_jvst57f_0["handler"])
+仔细看disable.SerializationFeature.FAIL_ON_EMPTY_BEANS部分，发现是实体类中有的字段值为null，所以在json化的时候，
+fasterxml.jackson将对象转换为json报错:
+解决办法：
+　　在实体类上面加上注解 @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
