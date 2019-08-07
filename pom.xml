@@ -35,6 +35,7 @@
         <module>springboot2-zookeeper</module>
         <module>springboot2-kafka</module>
         <module>springboot2-kafka-basic</module>
+        <module>springboo2-admin-server</module>
     </modules>
 
 </project>
