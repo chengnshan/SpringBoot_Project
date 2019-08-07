@@ -7,9 +7,6 @@
         <id property="id" column="id" />
         <result property="classesId" column="classes_id"/>
         <result property="classesName" column="classes_name"/>
-       <collection property="stus" column="classes_id"
-                   select="com.cxp.springbootmybatis.xml.mapper.StudentInfoMapper.findStudentInfoLsitByClassesId"
-                   fetchType="lazy"></collection>
     </resultMap>
 
     <sql id="baseColumn">

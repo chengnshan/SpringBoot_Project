@@ -1,10 +1,8 @@
 package com.cxp.springbootmybatis.xml.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -14,9 +12,9 @@ import java.util.Date;
  * @date 2019/4/14 下午1:00
  */
 @Data
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 public class StudentInfo implements Serializable {
 
     private Integer id;
@@ -29,4 +27,5 @@ public class StudentInfo implements Serializable {
     private String classesId;
 
     private ClassesInfo classesInfo;
+
 }
