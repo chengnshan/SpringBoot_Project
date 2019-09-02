@@ -36,6 +36,7 @@
         <module>springboot2-kafka</module>
         <module>springboot2-kafka-basic</module>
         <module>springboo2-admin-server</module>
+        <module>springboot2-netty</module>
     </modules>
 
 </project>
