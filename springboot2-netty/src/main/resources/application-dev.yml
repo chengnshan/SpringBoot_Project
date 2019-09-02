@@ -1,0 +1,7 @@
+server:
+  port: 8208
+  servlet:
+    context-path: /springboot2-netty
+
+netty:
+  port: 10999
