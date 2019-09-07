@@ -1,6 +1,6 @@
-package com.cxp.springboot2netty.config;
+package com.cxp.springboot2netty.config.netty;
 
-import com.cxp.springboot2netty.netty.NettyServer;
+import com.cxp.springboot2netty.netty.netty_server.NettyServer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletContextEvent;

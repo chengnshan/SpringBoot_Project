@@ -5,3 +5,6 @@ server:
 
 netty:
   port: 10999
+  bossThreadCount: 10
+  workerThreadCount: 10
+  soBacklog: 1024
