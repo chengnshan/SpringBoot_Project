@@ -17,6 +17,7 @@ public class JspController {
     @RequestMapping("/jsp")
     public String toJps(Model model) {
         model.addAttribute("welcome", "不建议使用jsp");
+        System.out.println("toJps");
         return "welcome";
     }
 }
