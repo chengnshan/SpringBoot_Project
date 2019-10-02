@@ -11,6 +11,7 @@
 
 	<artifactId>springboo2-admin-server</artifactId>
 	<name>springboo2-admin-server</name>
+	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -56,6 +57,15 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- sharding-jdbc -->
+		<!-- https://mvnrepository.com/artifact/org.apache.shardingsphere/sharding-jdbc-core -->
+		<dependency>
+			<groupId>org.apache.shardingsphere</groupId>
+			<artifactId>sharding-jdbc-core</artifactId>
+			<version>4.0.0-RC1</version>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
