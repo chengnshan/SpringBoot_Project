@@ -11,3 +11,5 @@ spring:
 logging:
   level:
     com.cxp.springboot2mybatisplus: debug
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
