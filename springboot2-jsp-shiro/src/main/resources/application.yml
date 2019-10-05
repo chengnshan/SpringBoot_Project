@@ -1,12 +1,3 @@
-server:
-  port: 8088
-  servlet:
-    context-path: /
-    jsp:
-      init-parameters:
-        development: trur
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
+  profiles:
+    active: h2
