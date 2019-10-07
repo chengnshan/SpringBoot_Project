@@ -48,8 +48,9 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/logout", "logout");
         // <!-- 过滤链定义，从上向下顺序执行，一般将 /**放在最为下边 -->:这是一个坑呢，一不小心代码就不好使了;
         // <!-- authc:所有url都必须认证通过才可以访问; anon:所有url都都可以匿名访问-->
-        filterChainDefinitionMap.put("/js/**", "anon");
+        filterChainDefinitionMap.put("/static/**", "anon");
         filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/doLogin", "anon");
         filterChainDefinitionMap.put("/defaultKaptcha", "anon");
         filterChainDefinitionMap.put("/html/kickout.html", "anon");
         //anon ：org.apache.shiro.web.filter.authc.AnonymousFilter
@@ -81,7 +82,7 @@ public class ShiroConfig {
         userRealm.setCachingEnabled(true);
         // 启用缓存,默认是false userRealm.setCachingEnabled(true); //
         // 启用身份验证缓存，即缓存AuthenticationInfo信息，默认false；
-        userRealm.setAuthenticationCachingEnabled(true); //
+        userRealm.setAuthenticationCachingEnabled(true);
         // 缓存AuthenticationInfo信息的缓存名称,即配置在ehcache.xml中的cache name
         userRealm.setAuthenticationCacheName("authenticationCache");
         // 启用授权缓存，即缓存AuthorizationInfo信息，默认false；

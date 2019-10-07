@@ -17,9 +17,10 @@ spring:
     url: jdbc:h2:mem:test
     username: root
     password: test
+  resources:
+    static-locations: classpath:/
 
 # Logger Config
 logging:
   level:
     com.cxp.springboot2shiro: debug
-

@@ -1,8 +1,8 @@
 package com.cxp.springboot2shiro.shiroconfig;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.cxp.springboot2jspshiro.pojo.UserInfo;
-import com.cxp.springboot2jspshiro.service.UserInfoService;
+import com.cxp.springboot2shiro.pojo.UserInfo;
+import com.cxp.springboot2shiro.service.UserInfoService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
