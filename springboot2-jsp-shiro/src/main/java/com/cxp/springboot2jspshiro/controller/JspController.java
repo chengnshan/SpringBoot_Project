@@ -9,6 +9,7 @@ package com.cxp.springboot2jspshiro.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping
@@ -19,5 +20,12 @@ public class JspController {
         model.addAttribute("welcome", "不建议使用jsp");
         System.out.println("toJps");
         return "welcome";
+    }
+
+    @RequestMapping("/login")
+    public ModelAndView login(ModelAndView modelAndView) {
+        modelAndView.setViewName("/login");
+        System.out.println("login");
+        return modelAndView;
     }
 }

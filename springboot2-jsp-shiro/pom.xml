@@ -65,16 +65,16 @@
 		</dependency>
 
 		<!-- Provided 编译和测试的时候使用-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
-		<!--	<scope>provided</scope>-->
-		</dependency>
+		&lt;!&ndash;	<scope>provided</scope>&ndash;&gt;
+		</dependency>-->
 		<!-- 对jsp的支持的依赖 -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
-		<!--	<scope>provided</scope>-->
+			<scope>provided</scope>
 		</dependency>
 		<!-- jstl标签库 -->
 		<dependency>
