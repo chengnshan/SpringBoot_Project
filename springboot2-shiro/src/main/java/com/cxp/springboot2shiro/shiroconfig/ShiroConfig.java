@@ -53,6 +53,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/doLogin", "anon");
         filterChainDefinitionMap.put("/defaultKaptcha", "anon");
         filterChainDefinitionMap.put("/html/kickout.html", "anon");
+        filterChainDefinitionMap.put("/actuator/**", "anon");
         //anon ：org.apache.shiro.web.filter.authc.AnonymousFilter
         //authc：org.apache.shiro.web.filter.authc.FormAuthenticationFilter
         filterChainDefinitionMap.put("/**", "authc");

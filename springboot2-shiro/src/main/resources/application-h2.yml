@@ -24,3 +24,11 @@ spring:
 logging:
   level:
     com.cxp.springboot2shiro: debug
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
