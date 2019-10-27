@@ -1,5 +1,6 @@
 package com.cxp.springboot2shardingsphere;
 
+import com.cxp.springboot2shardingsphere.config.EnableSharding;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +12,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan({"com.cxp.springboot2shardingsphere.mapper"})
 @SpringBootApplication(exclude = {org.apache.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration.class,
         io.shardingsphere.shardingjdbc.spring.boot.SpringBootConfiguration.class})
+
+@EnableSharding(value = "masterSalveConfig")
+
 public class Springboot2ShardingsphereApplication {
 
     public static void main(String[] args) {

@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -49,6 +50,7 @@ public class Springboot2ShardingsphereApplicationTests {
             user.setId(i);
             user.setAge(12+i-1);
             user.setName(user.getAge()+"name");
+            user.setBirthday(new Date());
 
             userService.save(user);
         }

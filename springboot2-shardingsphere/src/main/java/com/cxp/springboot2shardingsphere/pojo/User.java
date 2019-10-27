@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
+
 /**
  * @program: SpringBoot_Project
  * @description:
@@ -15,7 +17,7 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("user")
+@TableName("user_info")
 public class User extends Model<User> {
 
     /**
@@ -32,5 +34,7 @@ public class User extends Model<User> {
      * 年龄
      */
     private int age;
+
+    private Date birthday;
 
 }

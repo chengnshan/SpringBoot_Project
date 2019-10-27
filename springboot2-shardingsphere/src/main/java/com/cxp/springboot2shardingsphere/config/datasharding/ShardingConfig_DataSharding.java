@@ -1,11 +1,10 @@
-package com.cxp.springboot2shardingsphere.config;
+package com.cxp.springboot2shardingsphere.config.datasharding;
 
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.apache.shardingsphere.api.config.sharding.KeyGeneratorConfiguration;
 import org.apache.shardingsphere.api.config.sharding.ShardingRuleConfiguration;
 import org.apache.shardingsphere.api.config.sharding.TableRuleConfiguration;
-import org.apache.shardingsphere.api.config.sharding.strategy.ComplexShardingStrategyConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.InlineShardingStrategyConfiguration;
 import org.apache.shardingsphere.api.config.sharding.strategy.StandardShardingStrategyConfiguration;
 import org.apache.shardingsphere.shardingjdbc.api.ShardingDataSourceFactory;
@@ -30,8 +29,7 @@ import java.util.*;
  * @author: cheng
  * @create: 2019-10-21 22:44
  */
-@Configuration
-public class ShardingConfig_DataShrding {
+public class ShardingConfig_DataSharding {
 
     /**
      * 切片配置
@@ -97,7 +95,7 @@ public class ShardingConfig_DataShrding {
     }
 
     public TableRuleConfiguration getOrderTableRuleConfiguration(){
-        TableRuleConfiguration result = new TableRuleConfiguration("user", "das${0..1}.user_${0..1}");
+        TableRuleConfiguration result = new TableRuleConfiguration("user_info", "das${0..1}.user_info_${0..1}");
         result.setKeyGeneratorConfig(getKeyGeneratorConfiguration());
         return result;
     }
@@ -120,7 +118,7 @@ public class ShardingConfig_DataShrding {
         // 配置第一个数据源,对应库other
         DruidDataSource dataSourceDefault = new DruidDataSource();
         dataSourceDefault.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceDefault.setUrl("jdbc:mysql://192.168.8.101:3306/shrding1?characterEncoding=utf8&serverTimezone=GMT%2B8");
+        dataSourceDefault.setUrl("jdbc:mysql://192.168.8.101:3306/sharding1?characterEncoding=utf8&serverTimezone=GMT%2B8");
         dataSourceDefault.setUsername("root");
         dataSourceDefault.setPassword("123456");
         dataSourceMap.put("das0", dataSourceDefault);
@@ -128,7 +126,7 @@ public class ShardingConfig_DataShrding {
         // 配置第二个数据源,对应库younger
         DruidDataSource dataSourceYounger = new DruidDataSource();
         dataSourceYounger.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSourceYounger.setUrl("jdbc:mysql://192.168.8.101:3306/shrding2?characterEncoding=utf8&serverTimezone=GMT%2B8");
+        dataSourceYounger.setUrl("jdbc:mysql://192.168.8.101:3306/sharding2?characterEncoding=utf8&serverTimezone=GMT%2B8");
         dataSourceYounger.setUsername("root");
         dataSourceYounger.setPassword("123456");
         dataSourceMap.put("das1", dataSourceYounger);

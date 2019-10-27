@@ -1,4 +1,4 @@
-package com.cxp.springboot2shardingsphere.config;
+package com.cxp.springboot2shardingsphere.config.datasharding;
 
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingAlgorithm;
 import org.apache.shardingsphere.api.sharding.standard.PreciseShardingValue;
