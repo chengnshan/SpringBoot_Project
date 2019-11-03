@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArraySet;
+
 /**
  * @author 程
  * @date 2019/7/15 下午6:23
@@ -12,6 +15,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 public class MyHandler extends TextWebSocketHandler {
 
     private static Logger logger = LoggerFactory.getLogger(MyHandler.class);
+
+    public static CopyOnWriteArraySet<WebSocketSession> webSocketSessions = new CopyOnWriteArraySet<WebSocketSession>();
     /**
      * 连接成功时候，会触发UI上onopen方法
      * @param session
@@ -20,6 +25,7 @@ public class MyHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         System.out.println("connect to the websocket success......");
+        webSocketSessions.add(session);
         super.afterConnectionEstablished(session);
     }
 
@@ -31,7 +37,30 @@ public class MyHandler extends TextWebSocketHandler {
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        super.handleTextMessage(session, message);
+        logger.info("客户端消息: {}", message.getPayload());
+        String websocketUsername = (String) session.getAttributes().get("websocket_username");
+        sendMessageToUser(websocketUsername,message);
+    }
+
+    /**
+     * 给某个用户发送消息
+     *
+     * @param userName
+     * @param message
+     */
+    public void sendMessageToUser(String userName, TextMessage message) {
+        for (WebSocketSession user : webSocketSessions) {
+            if (user.getAttributes().get("websocket_username").equals(userName)) {
+                try {
+                    if (user.isOpen()) {
+                        user.sendMessage(message);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+        }
     }
 
     @Override

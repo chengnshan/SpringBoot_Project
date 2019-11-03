@@ -23,9 +23,12 @@ public class MyWebSocketInterceptor extends HttpSessionHandshakeInterceptor {
         if (request instanceof ServletServerHttpRequest) {
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest)request;
             HttpSession session = servletRequest.getServletRequest().getSession(false);
-            String username = (String) session.getAttribute("username");
-
-            attributes.put("websocket_username",username);
+            if (session != null){
+                String username = (String) session.getAttribute("username");
+                attributes.put("websocket_username",username);
+            }else {
+                attributes.put("websocket_username",String.valueOf(System.currentTimeMillis()));
+            }
         }
         return super.beforeHandshake(request, response, wsHandler, attributes);
     }
