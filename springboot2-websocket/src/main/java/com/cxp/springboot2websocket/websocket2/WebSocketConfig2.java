@@ -30,14 +30,14 @@ public class WebSocketConfig2 implements WebSocketConfigurer {
      */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(myHandler(), "/websocket2")
+        registry.addHandler(chatMessageHandler(), "/websocket2")
                 .addInterceptors(new MyWebSocketInterceptor()).setAllowedOrigins("*");
 
-        registry.addHandler(myHandler(),"/sockjs/websocket2").addInterceptors(new MyWebSocketInterceptor()).withSockJS();
+        registry.addHandler(chatMessageHandler(),"/sockjs/websocket2").addInterceptors(new MyWebSocketInterceptor()).withSockJS();
     }
 
     @Bean
-    public MyHandler myHandler(){
-        return new MyHandler();
+    public ChatMessageHandler chatMessageHandler(){
+        return new ChatMessageHandler();
     }
 }

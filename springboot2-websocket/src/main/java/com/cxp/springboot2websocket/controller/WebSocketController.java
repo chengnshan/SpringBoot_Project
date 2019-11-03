@@ -14,4 +14,9 @@ public class WebSocketController {
     public String toWebSocketPage(){
         return "websocket";
     }
+
+    @GetMapping(value = "/toVueWebSocketPage")
+    public String toVueWebSocketPage(){
+        return "vue_websocket";
+    }
 }

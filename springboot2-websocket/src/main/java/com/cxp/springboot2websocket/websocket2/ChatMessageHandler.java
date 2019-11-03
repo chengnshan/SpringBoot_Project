@@ -12,9 +12,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @author 程
  * @date 2019/7/15 下午6:23
  */
-public class MyHandler extends TextWebSocketHandler {
+public class ChatMessageHandler extends TextWebSocketHandler {
 
-    private static Logger logger = LoggerFactory.getLogger(MyHandler.class);
+    private static Logger logger = LoggerFactory.getLogger(ChatMessageHandler.class);
 
     public static CopyOnWriteArraySet<WebSocketSession> webSocketSessions = new CopyOnWriteArraySet<WebSocketSession>();
     /**
