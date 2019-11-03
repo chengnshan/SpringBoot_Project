@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--在html中添加xmlns:th="http://www.thymeleaf.org" ,可避免编辑器出现html验证错误，这不是必须的-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf使用</title>
+    <script type="text/javascript" th:src="@{static/js/vue/vue-2.4.0.js}"></script>
+    <script type="text/javascript" th:src="@{static/js/vue/vue-resource-1.3.4.js}"></script>
+    <script type="text/javascript">
+
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">用户</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+            <option selected>选择一个...</option>
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control">
+        <div class="input-group-append">
+            <span class="input-group-text" id="btn1">发送给所有人</span>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control">
+        <div class="input-group-append">
+            <span class="input-group-text" id="btn2">发送给单人</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
