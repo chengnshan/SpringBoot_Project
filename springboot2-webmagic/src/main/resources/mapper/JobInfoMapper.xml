@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cxp.springboot2webmagic.mapper.JobInfoMapper">
+
+    <resultMap id="baseResultMap" type="com.cxp.springboot2webmagic.pojo.JobInfo">
+        <id property="id" column="id" />
+        <result property="companyName" column="company_name" />
+        <result property="companyAddr" column="company_addr" />
+        <result property="companyInfo" column="company_info" />
+        <result property="jobName" column="job_name" />
+        <result property="jobAddr" column="job_addr" />
+        <result property="jobInfo" column="job_info" />
+        <result property="salaryMin" column="salary_min" />
+        <result property="salaryMax" column="salary_max" />
+        <result property="url" column="url" />
+        <result property="time" column="time" />
+    </resultMap>
+
+</mapper>
