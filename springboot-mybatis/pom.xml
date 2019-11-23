@@ -11,6 +11,7 @@
 
 	<artifactId>springboot-mybatis</artifactId>
 	<name>springboot-mybatis</name>
+	<packaging>jar</packaging>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

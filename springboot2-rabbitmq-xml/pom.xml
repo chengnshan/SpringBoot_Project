@@ -12,6 +12,7 @@
     <groupId>com.cxp</groupId>
     <artifactId>springboot2-rabbitmq-xml</artifactId>
     <name>springboot2-rabbitmq-xml</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>

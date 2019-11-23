@@ -11,6 +11,7 @@
 
     <artifactId>springboot2-kafka-basic</artifactId>
     <name>springboot2-kafka-basic</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>

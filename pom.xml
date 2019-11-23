@@ -42,6 +42,7 @@
         <module>springboot2-mybatis-plus</module>
         <module>springboot2-shardingsphere</module>
         <module>springboot2-webflux</module>
+        <module>springboot2-webmagic</module>
     </modules>
 
 </project>

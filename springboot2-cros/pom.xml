@@ -11,6 +11,7 @@
 
     <artifactId>springboot2-cros</artifactId>
     <name>springboot2-cros</name>
+    <packaging>jar</packaging>
     <description>Spring Boot跨域访问Cross-Origin Resource Sharing</description>
 
     <properties>

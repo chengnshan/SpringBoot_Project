@@ -1,4 +1,4 @@
-package com.cxp.springboot2netty.netty.netty_client;
+package com.cxp.springboot2netty.netty.nettyclient.client1;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;

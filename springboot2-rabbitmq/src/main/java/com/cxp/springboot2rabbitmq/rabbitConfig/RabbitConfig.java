@@ -103,9 +103,9 @@ public class RabbitConfig {
      * @param idClass
      */
     private void scanPackages(String packageName1,Map<String, Class<?>> idClass)  {
-        String packageName = !StringUtils.isEmpty(packageName1)?
+        String packageName = !StringUtils.isEmpty(packageName1) ?
                 packageName1.replace(".","/"):null;
-        String packagesUrl = this.getClass().getClassLoader().getResource(packageName).getFile();
+        String packagesUrl = this.getClass().getClassLoader().getResource(packageName).getPath();
         File scanFile=new File(packagesUrl);
         String[] filenameList=scanFile.list();
         for (String filename :filenameList){
@@ -116,7 +116,7 @@ public class RabbitConfig {
                 if (filename.indexOf(".class") > 0){
                     Class<?> aClass = null;
                     try {
-                        aClass = Class.forName(packageName1 + "." +
+                        aClass = Class.forName(packageName.replace("/",".") + "." +
                                 filename.substring(0,filename.lastIndexOf(".class")));
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();

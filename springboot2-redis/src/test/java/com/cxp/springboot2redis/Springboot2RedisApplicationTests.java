@@ -14,3 +14,4 @@ public class Springboot2RedisApplicationTests {
     }
 
 }
+    

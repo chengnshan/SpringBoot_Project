@@ -11,6 +11,7 @@
 
     <artifactId>springboot2-actuator</artifactId>
     <name>springboot2-actuator</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>

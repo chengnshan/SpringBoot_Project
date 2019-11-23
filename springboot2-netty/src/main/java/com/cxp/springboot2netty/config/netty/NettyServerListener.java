@@ -8,6 +8,10 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 /**
+ * ServletContextListener 接口作用：监听 ServletContext 对象的生命周期，实际上就是监听 Web 应用的生命周期
+ * ServletContextListener 接口主要有两个方法，一个在当Servlet 容器启动web应用时调用，另一个是在Servlet 容器终止web应用时调用。
+ * 实现 ServletContextListener 接口需重写这两方法。
+ *
  * @program: SpringBoot_Project
  * @description:
  * @author: cheng

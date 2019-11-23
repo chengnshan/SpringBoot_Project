@@ -12,6 +12,7 @@
     <artifactId>springboot2-redis</artifactId>
    
     <name>springboot2-redis</name>
+    <packaging>jar</packaging>
     <description>Demo project for Spring Boot</description>
 
     <properties>

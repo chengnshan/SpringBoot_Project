@@ -22,12 +22,20 @@ public class CustomCorsFilter extends CorsFilter {
     }
 
     private static UrlBasedCorsConfigurationSource configurationSource() {
+        //1. 添加 CORS配置信息
         CorsConfiguration config = new CorsConfiguration();
+        //是否发送 Cookie
         config.setAllowCredentials(true);
+        //放行哪些原始域
         config.addAllowedOrigin("*");
+        //放行哪些原始请求头部信息
         config.addAllowedHeader("*");
+        //暴露哪些头部信息
+        config.addExposedHeader("*");
         config.setMaxAge(36000L);
+        //放行哪些请求方式
         config.setAllowedMethods(Arrays.asList("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"));
+        //2. 添加映射路径
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/corsFilter/**", config);
         return source;

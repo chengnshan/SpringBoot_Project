@@ -1,18 +1,21 @@
 package com.cxp.springboot2netty.netty.netty_server;
 
 import com.alibaba.fastjson.JSON;
+import com.cxp.springboot2netty.ConstantCommon.ConstantClass;
+import com.cxp.springboot2netty.config.common.NettyChannelMap;
 import com.cxp.springboot2netty.config.common.SpringApplicationHolder;
+import com.cxp.springboot2netty.pojo.BaseMsg;
+import com.cxp.springboot2netty.pojo.MsgType;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
-import java.nio.ByteBuffer;
-import java.util.Map;
 
 /**
  *
@@ -25,24 +28,34 @@ import java.util.Map;
 @ChannelHandler.Sharable
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
+    /**
+     * 心跳丢失次数
+     */
+    private int counter = 0;
+
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        StringBuilder sb = null;
-        Map<String, Object> result = null;
+        //重置心跳丢失次数
+        counter = 0;
         try {
-            // 报文解析处理
-            sb = new StringBuilder();
-            String message = (String) msg;
-            result = JSON.parseObject(message);
-
-            sb.append(result);
-            sb.append("解析成功");
-            sb.append("$_");
-            ctx.writeAndFlush(sb);
+            if (msg instanceof BaseMsg){
+                BaseMsg baseMsg = (BaseMsg) msg;
+                //心跳信息
+                if (MsgType.PING.equals(baseMsg.getMsgType())){
+                    InetSocketAddress inetSocketAddress = (InetSocketAddress) ctx.channel().remoteAddress();
+                    String clientIp = inetSocketAddress.getAddress().getHostAddress();
+                    if (!NettyChannelMap.contains(clientIp)){
+                        NettyChannelMap.add(clientIp,(SocketChannel) ctx.channel());
+                    }
+                    log.info("收到客户端心跳包!");
+                }else if (MsgType.REPLY.equals(baseMsg.getMsgType())){
+                    log.info(" 收到客户端消息 : " + baseMsg);
+                }
+            }
         } catch (Exception e) {
             String errorCode = "-1\n";
             ctx.writeAndFlush(errorCode);
-            log.error("报文解析失败: " + e.getMessage());
+            log.error("报文解析失败: " + e.getMessage(),e);
         }finally {
             ReferenceCountUtil.release(msg);
         }
@@ -59,7 +72,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         String clientIp = inetSocketAddress.getAddress().getHostAddress();
         int port = inetSocketAddress.getPort();
         log.info("收到客户端[ip:" + clientIp + ", 端口: "+port+" ]连接");
-        SpringApplicationHolder.channelMap.put(clientIp,ctx.channel());
     }
 
     @Override
@@ -78,21 +90,37 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         log.info("userEventTriggered === ");
-        IdleStateEvent event =(IdleStateEvent)evt;
         String eventType = null;
-        switch (event.state()){
-            case READER_IDLE:
-                eventType = "读空闲";
-                break;
-            case WRITER_IDLE:
-                eventType = "写空闲";
-                break;
-            case ALL_IDLE:
-                eventType ="读写空闲";
-                break;
+        if (evt instanceof IdleStateEvent){
+            IdleStateEvent event =(IdleStateEvent)evt;
+            switch (event.state()){
+                case READER_IDLE:
+                    eventType = "读空闲";
+                    // 空闲40s之后触发 (心跳包丢失)
+                    if (counter >= 3) {
+                        // 连续丢失3个心跳包 (断开连接)
+                        ctx.channel().close().sync();
+                        log.error("已与"+ctx.channel().remoteAddress()+"断开连接");
+                        System.out.println("已与"+ctx.channel().remoteAddress()+"断开连接");
+                    } else {
+                        counter++;
+                        log.debug(ctx.channel().remoteAddress() + "丢失了第 " + counter + " 个心跳包");
+                        System.out.println("丢失了第 " + counter + " 个心跳包");
+                    }
+                    break;
+                case WRITER_IDLE:
+                    eventType = "写空闲";
+                    break;
+                case ALL_IDLE:
+                    eventType ="读写空闲";
+                    break;
+                default:
+                    break;
+            }
         }
+
         System.out.println(ctx.channel().remoteAddress() + "超时事件：" +eventType);
-        super.userEventTriggered(ctx, evt);
+    //    super.userEventTriggered(ctx, evt);
     }
 
     /**
@@ -102,8 +130,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-        SocketAddress remoteAddress = ctx.channel().remoteAddress();
-        log.info("channelUnregistered === "+remoteAddress+"已经失去连接!");
         super.channelUnregistered(ctx);
     }
 
@@ -114,6 +140,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        SocketAddress remoteAddress = ctx.channel().remoteAddress();
+        log.info("channelUnregistered === "+remoteAddress+"已经失去连接!");
+        NettyChannelMap.remove((SocketChannel) ctx.channel());
         super.channelInactive(ctx);
     }
 

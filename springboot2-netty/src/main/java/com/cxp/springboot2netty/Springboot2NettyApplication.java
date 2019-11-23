@@ -7,8 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
+/**
+ * @author cheng
+ */
 @SpringBootApplication
-//@ServletComponentScan
+/*@ServletComponentScan*/
 public class Springboot2NettyApplication implements CommandLineRunner {
 
     public static void main(String[] args) {

@@ -1,13 +1,9 @@
 package com.cxp.springboot2netty.config.common;
 
-import io.netty.channel.Channel;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @program: SpringBoot_Project
@@ -17,8 +13,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class SpringApplicationHolder implements ApplicationContextAware {
-
-    public static Map<String, Channel> channelMap = new ConcurrentHashMap<>();
 
     private static ApplicationContext applicationContext = null;
 

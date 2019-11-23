@@ -2,6 +2,7 @@ package com.cxp.springboot2netty.netty.netty_server;
 
 import com.cxp.springboot2netty.config.netty.NettyProperties;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -47,7 +48,7 @@ public class NettyServer {
                 //接收缓冲区用于保存网络协议站内收到的数据，直到应用程序读取成功，发送缓冲区用于保存发送数据，直到发送成功。
                 .childOption(ChannelOption.SO_SNDBUF,1024 * 32)
                 .childOption(ChannelOption.SO_RCVBUF,1024 * 32)
-                .handler(new LoggingHandler(LogLevel.DEBUG))
+                .handler(new LoggingHandler(LogLevel.INFO))
                 //该参数的作用就是禁止使用Nagle算法，使用于小数据即时传输，于TCP_NODELAY相对应的是TCP_CORK，该选项是需要等到发送的数据量
                 // 最大的时候，一次性发送数据，适用于文件传输。
                 .childOption(ChannelOption.TCP_NODELAY,true)
