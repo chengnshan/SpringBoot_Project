@@ -1,5 +1,7 @@
 package com.cxp.springboot2websocket.websocket1;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -11,8 +13,7 @@ import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -51,6 +52,17 @@ public class MyWebSocketServer {
 //        } catch (IOException e) {
 //            System.out.println("IO异常");
 //        }
+        Map<String,Object> map = new HashMap<>(16);
+        map.put("users",sessionPool.keySet());
+        //遍历发送消息
+        Collection<MyWebSocketServer> values = sessionPool.values();
+        values.forEach( us ->{
+            try {
+                us.sendMessage(JSON.toJSONString(map));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } );
     }
 
     /**
@@ -62,6 +74,10 @@ public class MyWebSocketServer {
         webSocketSet.remove(this);
         subOnlineCount();           //在线数减1
         log.info("有一连接关闭！当前在线人数为" + getOnlineCount());
+
+        if (sessionPool.values().contains(this)){
+            sessionPool.values().remove(this);
+        }
     }
 
     /**
@@ -71,11 +87,23 @@ public class MyWebSocketServer {
     @OnMessage
     public void onMessage(String message, Session session) throws IOException {
         this.session = session;
-        message = "来自客户端的消息:" + message;
-        log.info(message);
+        log.info("来自客户端的消息:" + message);
         try {
-            sendMessage( message);
-        } catch (IOException e) {
+            HashMap hashMap = JSON.parseObject(message, HashMap.class);
+
+            Map<String,Object> map = new HashMap<>(16);
+
+            JSONArray users = (JSONArray) hashMap.get("users");
+            users.forEach(arr -> {
+                MyWebSocketServer myWeb = sessionPool.get(arr);
+                try {
+                    map.put("message",hashMap.get("msg"));
+                    myWeb.sendMessage(JSON.toJSONString(map));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
             log.error("onMessage方法异常"+e.toString());
             e.printStackTrace();
         }
@@ -129,4 +157,5 @@ public class MyWebSocketServer {
     public static synchronized void subOnlineCount() {
         MyWebSocketServer.onlineCount.getAndDecrement();
     }
+
 }

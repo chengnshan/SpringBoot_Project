@@ -13,21 +13,24 @@
     <div class="input-group mb-3">
         <div class="input-group-prepend">
             <label class="input-group-text" for="inputGroupSelect01">用户</label>
+            <input type="text" name="username" id="username" v-model="username" />
+            <input type="button" name="login" id="login" value="登录websocket" @click="loginWebsocket"/>
         </div>
-        <select class="custom-select" id="inputGroupSelect01">
-            <option selected>选择一个...</option>
+        <select class="custom-select" id="inputGroupSelect01" v-model="selectVal">
+            <option selected value="">选择一个...</option>
+            <option v-for="obj in users">{{obj}}</option>
         </select>
     </div>
     <div class="input-group mb-3">
-        <input type="text" class="form-control" id="all">
+        <input type="text" class="form-control" id="all" v-model="allUs">
         <div class="input-group-append">
-            <span class="input-group-text" id="btn1" >发送给所有人</span>
+            <span class="input-group-text" id="btn1" ><button @click="sendAll">发送给所有人</button></span>
         </div>
     </div>
     <div class="input-group mb-3">
         <input type="text" class="form-control" id="single" v-model="singleMsg">
         <div class="input-group-append">
-            <span class="input-group-text" id="btn2" ><button @click="single">发送给单人</button></span>
+            <span class="input-group-text" id="btn2" ><button @click="single">发送给服务器</button></span>
         </div>
     </div>
 </div>
@@ -38,27 +41,34 @@
         el: '#app',
         data(){
             return {
-                singleMsg : ''
+                singleMsg : '',
+                allUs : '',
+                selectVal : '',
+                username : '',
+                users : [],
+                msgObj: {
+                    users: [],
+                    msg: ''
+                }
             }
         },
         created(){  // 页面创建生命周期函数
-            this.initWebSocket()
+
         },
         destroyed: function () { // 离开页面生命周期函数
             this.websocketclose();
         },
         methods:{
-            collapse: function(){
-                this.isCollapse = !this.isCollapse;
-                if (this.isCollapse) {
-                    this.iconClass = "cebianlanzhankai";
-                } else{
-                    this.iconClass = "cebianlanshouhui";
+            loginWebsocket: function(){
+                if (! this.username) {
+                    console.log('请输入登录用户名!');
+                    return;
                 }
+                this.initWebSocket();
             },
             initWebSocket: function () {
                 // WebSocket与普通的请求所用协议有所不同，ws等同于http，wss等同于https
-                this.websock = new WebSocket("ws://localhost:8106/websocket1/DPS007");
+                this.websock = new WebSocket("ws://localhost:8106/websocket1/" + this.username);
                 this.websock.onopen = this.websocketonopen;
                 this.websock.onerror = this.websocketonerror;
                 this.websock.onmessage = this.websocketonmessage;
@@ -73,15 +83,36 @@
             websocketonmessage: function (e) {
                 //    var da = JSON.parse(e.data);
                 var da = (e.data);
-                console.log(da);
-                this.message = da;
+                console.log("来自服务端发送消息: " + da);
+                if (da) {
+                    let parse = JSON.parse(da);
+                    if (parse && parse.users){
+                        this.users = parse.users;
+                    }
+                }
             },
             websocketclose: function (e) {
                 console.log("connection closed (" + e.code + ")");
             },
-
             single(e) {
-                this.websock.send(this.singleMsg);
+                //清空数组
+                this.msgObj.users.splice(0);
+
+                this.msgObj.users.push(this.username);
+                this.msgObj['msg'] = this.singleMsg;
+                this.websock.send(JSON.stringify(this.msgObj));
+            },
+            sendAll(){
+                //清空数组
+                this.msgObj.users.splice(0);
+                if ( ! this.selectVal){
+                    this.msgObj.users = this.msgObj.users.concat(this.users) ;
+                }else {
+                    this.msgObj.users.push(this.selectVal);
+                }
+                this.msgObj['msg'] = this.allUs;
+
+                this.websock.send(JSON.stringify(this.msgObj));
             }
         }
     });
