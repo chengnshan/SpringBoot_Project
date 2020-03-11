@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.8.RELEASE</version>
+        <version>2.1.9.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -43,6 +43,8 @@
         <module>springboot2-shardingsphere</module>
         <module>springboot2-webflux</module>
         <module>springboot2-webmagic</module>
+        <module>springboot2-netty-websocket</module>
+        <module>springboot2-quartz</module>
     </modules>
 
 </project>
