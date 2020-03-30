@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/webjars/vue/2.6.11/vue.js}"></script>
+    <!--    <script type="text/javascript" th:src="@{/webjars/axios/0.19.2/lib/axios.js}"></script>-->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--    <script type="text/javascript" src="webjars/bootstrap/4.4.1-1/js/bootstrap.js"></script>-->
+    <link rel="stylesheet" th:href="@{/webjars/element-ui/2.13.0/lib/theme-chalk/index.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/element-ui/2.13.0/lib/index.js}"></script>
+</head>
+<body>
+<div id="app">
+    <div style="width:600px;height: 400px;border: 0px red solid;background-color: #bbebff;position: relative;
+    top: 50%;left: 50%;transform: translate(-50%,50%);">
+        <div style="width:50%;height:50%;position: absolute;transform: translate(150px,100px);border: 0 blue solid;">
+
+            <el-form ref="form" :model="form" action="/">
+                <el-form-item>
+                    <el-input placeholder="请输入用户名" v-model="form.username" :disabled="false">
+                        <template slot="prepend">用户名:</template>
+                    </el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-input placeholder="请输入密码" v-model="form.password" show-password>
+                        <template slot="prepend">密&nbsp;&nbsp;&nbsp;码:</template>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item>
+                    <div style="text-align: center;">
+                        <el-button type="primary" round v-on:click.prevent="submitForm">提交</el-button>
+                        <el-button type="success" round v-on:click.prevent="resetForm">重置</el-button>
+                    </div>
+                </el-form-item>
+            </el-form>
+
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            form: {
+                username: '',
+                password: ''
+            }
+        },
+        methods: {
+            resetForm() {
+                for (item in this.form) {
+                    this.form[item] = '';
+                }
+            },
+            submitForm() {
+                console.log(this.form);
+                this.Post('/redis/login', {"username": this.form.username, "password": this.form.password});
+            },
+            /*
+            *功能： 模拟form表单的提交
+            *参数： URL 跳转地址 PARAMTERS 参数
+            */
+            Post(URL, PARAMTERS) {
+                //创建form表单
+                var temp_form = document.createElement("form");
+                temp_form.action = URL;
+                //如需打开新窗口，form的target属性要设置为'_blank'
+                temp_form.target = "_self";
+                temp_form.method = "post";
+                temp_form.style.display = "none";
+                //添加参数
+                for (var item in PARAMTERS) {
+                    var opt = document.createElement("textarea");
+                    opt.name = item;
+                    opt.value = PARAMTERS[item];
+                    temp_form.appendChild(opt);
+                }
+                document.body.appendChild(temp_form);
+                //提交数据
+                temp_form.submit();
+            }
+        }
+    });
+</script>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+</html>
