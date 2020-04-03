@@ -68,6 +68,6 @@ public class MyChannelInterceptor implements ChannelInterceptor {
      */
     @Override
     public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
-        log.info("{}","MyChannelInterceptor postSend...");
+
     }
 }

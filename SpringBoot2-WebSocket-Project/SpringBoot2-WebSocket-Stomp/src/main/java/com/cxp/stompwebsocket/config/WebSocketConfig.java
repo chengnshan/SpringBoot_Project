@@ -10,6 +10,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -30,9 +31,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // 增加一个入口节点，并开其sockjs的支持，和相关的配置
         //  /stomp是WebSocket（或SockJS）客户端为WebSocket握手需要连接到的端点的HTTP URL
         registry.addEndpoint("/stomp")
-                .setAllowedOrigins("http://localhost")
+                .setAllowedOrigins("http://localhost");
 //                .addInterceptors(new CustomHandshakeInterceptor())
-                .withSockJS()
+
+        registry.addEndpoint("/socketJs/stomp").setAllowedOrigins("*").withSockJS()
 
                 //流字节数限制--将streamBytesLimit属性设置为512KB（默认为128KB => 128 * 1024）
                 .setStreamBytesLimit(512*1024)
@@ -53,9 +55,25 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 以/app开头的destination header的STOMP消息被路由到@Controller类中的@MessageMapping方法
-        registry.setApplicationDestinationPrefixes("/app");
+        registry.setApplicationDestinationPrefixes("/app")
+                //
+                .setUserDestinationPrefix("/user")
+                .setPathMatcher(new AntPathMatcher("/"));
+
         // 使用内置的消息代理进行订阅和广播，并将destination header 以/topic或/queue开头的消息路由到代理
         registry.enableSimpleBroker("/topic", "/queue");
+
+        // 下面这配置为默认配置，如有变动修改配置启用就可以了
+        registry.enableStompBrokerRelay("/rabbit/queue")
+                //配置当Spring ApplicationContext刷新时是否应该自动启动
+                .setAutoStartup(false)
+                //Mq服务器地址
+                .setRelayHost("127.0.0.1")
+                //Mq服务器服务端口
+                .setRelayPort(61613)
+                .setVirtualHost("/")
+                //Mq服务登录
+                .setClientLogin("guest").setClientPasscode("guest");
     }
 
     @Override
@@ -72,11 +90,13 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                             //2. 验证是否登录
                             String username = accessor.getNativeHeader("username").get(0);
                             String password = accessor.getNativeHeader("password").get(0);
-                            
+
                         }
-                        return null;
+                        return message;
                     }
                 });
+        // 线程信息
+        registration.taskExecutor().corePoolSize(4).maxPoolSize(8).keepAliveSeconds(60);
     }
 
     @Override

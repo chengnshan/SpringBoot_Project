@@ -32,11 +32,12 @@
             }
         },
         mounted(){
-            /*if ('WebSocket' in window){
+            if ('WebSocket' in window){
                 this.websocket = new WebSocket("ws://localhost:8103" + this.wsUrl);
-            }else {*/
-            // 建立连接对象（还未发起连接）
-            this.websocket = new SockJS(this.wsUrl);
+            }else {
+                // 建立连接对象（还未发起连接）
+                this.websocket = new SockJS("http://localhost:8103/socketJs" + this.wsUrl);
+            }
             // 获取 STOMP 子协议的客户端对象
             this.stompClient = Stomp.over(this.websocket);
             this.stompClient.heartbeat.outgoing = this.heartbeat.outgoing;
@@ -54,10 +55,11 @@
                 this.stompClient.subscribe(this.topic[1] + '/greetings',function (response) {
                     console.log('/queue/greetings : === ' + response.body);
                 });
-                this.stompClient.subscribe(this.topic[0] + '/wss/hello',function (response) {
-                    console.log('/topic/wss/hello : === ' + response.body);
+                this.stompClient.subscribe(this.topic[0] + '/wss/twoWays',function (response) {
+                    console.log('/topic/wss/twoWays : === ' + response.body);
                 });
                 this.stompClient.send("/app/wss/hello/张三丰",{}, "Hello, STOMP");
+                this.stompClient.send("/app/wss/twoWays",{}, "黄耀师");
             },
             failConnectWs(error){
                 // 连接失败时（服务器响应 ERROR 帧）的回调方法
