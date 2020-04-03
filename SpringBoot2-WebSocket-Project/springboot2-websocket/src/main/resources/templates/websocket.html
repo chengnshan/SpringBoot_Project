@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<!--在html中添加xmlns:th="http://www.thymeleaf.org" ,可避免编辑器出现html验证错误，这不是必须的-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thymeleaf使用</title>
+<!--    <script type="text/javascript" th:src="@{static/js/stomp/stomp.min.js}"></script>-->
+    <script type="text/javascript" th:src="@{static/js/stomp/sockjs.min.js}"></script>
+<!--    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>-->
+    <script type="text/javascript" th:src="@{static/js/jquery-1.9.1.min.js}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var websocket ;
+            //判断当前浏览器是否支持WebSocket
+            if ('WebSocket' in window){
+                console.log("WebSocket");
+                websocket = new WebSocket("ws://localhost:8106/websocket2");
+            }else if ('MozWebSocket' in window){
+                console.log("MozWebSocket");
+                websocket = new MozWebSocket("ws://localhost:8106/websocket2");
+            }else {
+                console.log("SockJS");
+                websocket = new SockJS("http://127.0.0.1:8106/sockjs/websocket2");
+            }
+
+            websocket.onopen = function (evnt) {
+                console.log("链接服务器成功!", evnt.data);
+            };
+
+            websocket.onmessage = function (evnt) {
+                console.log('收到消息:', evnt.data);
+                let isJson = isJSON(evnt.data);
+                if (isJson){
+                    var json = JSON.parse(evnt.data);
+                    if (json.hasOwnProperty('users')) {
+                        var users = json.users;
+                        for (var i = 0; i < users.length; i++) {
+                            $("#inputGroupSelect01").append('<option value="' + users[i] + '">' + users[i] + '</option>');
+                        }
+                    }
+                }
+            };
+            websocket.onerror = function (evnt) {
+            };
+
+            websocket.onclose = function (evnt) {
+                console.log("与服务器断开了链接!");
+            };
+
+            $(document).on('click','#btn2',function () {
+                let value = document.getElementById('input1').value;
+                let stringify = JSON.stringify({'data':value});
+                websocket.send(stringify);
+            });
+
+            function isJSON(str) {
+                if (typeof str == 'string') {
+                    try {
+                        var obj = JSON.parse(str);
+                        if(typeof obj == 'object' && obj ){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    } catch(e) {
+                        console.log('error：'+str+'!!!'+e);
+                        return false;
+                    }
+                }
+            }
+        });
+
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">用户</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+            <option selected>选择一个...</option>
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control">
+        <div class="input-group-append">
+            <button id="btn1">发送给所有人</button>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="input1">
+        <div class="input-group-append">
+            <button id="btn2">发送给单人</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

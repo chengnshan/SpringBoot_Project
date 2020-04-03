@@ -30,10 +30,12 @@ public class WebSocketConfig2 implements WebSocketConfigurer {
      */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        // 这个是支持原生websocket的节点
         registry.addHandler(chatMessageHandler(), "/websocket2")
                 .addInterceptors(new MyWebSocketInterceptor()).setAllowedOrigins("*");
-
-        registry.addHandler(chatMessageHandler(),"/sockjs/websocket2").addInterceptors(new MyWebSocketInterceptor()).withSockJS();
+        // 对sockjs的支持节点
+        registry.addHandler(chatMessageHandler(),"/sockjs/websocket2")
+                .addInterceptors(new MyWebSocketInterceptor()).withSockJS();
     }
 
     @Bean

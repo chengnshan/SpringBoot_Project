@@ -1,11 +1,16 @@
 package com.cxp.springboot2websocket.websocket2;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -24,8 +29,20 @@ public class ChatMessageHandler extends TextWebSocketHandler {
      */
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("connect to the websocket success......");
+        logger.info("connect to the websocket success......");
         webSocketSessions.add(session);
+
+        Map<String,Object> param = new HashMap(6);
+        param.put("data","connect success");
+
+        List<String> users = new ArrayList<>();
+        for (WebSocketSession socketSession : webSocketSessions){
+            users.add((String) socketSession.getAttributes().get("websocket_username"));
+        }
+        param.put("users", users);
+
+        TextMessage message = new TextMessage(JSON.toJSONString(param));
+        session.sendMessage(message);
         super.afterConnectionEstablished(session);
     }
 
