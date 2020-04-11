@@ -7,6 +7,7 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,7 @@ public class WebSocketStompController {
      * @throws Exception
      */
     @MessageMapping("/hello/{variable}")
-    //没有SendTo注解,默认是订阅了[/topic/wss/hello注解@MessageMapping组合]的客户端
+    //@SendTo广播消息出去
     @SendTo(value = {"/topic/greetings","/queue/greetings"})
     public String greeting(String message, @DestinationVariable(value = "variable") String desVariable,
                            @Headers Map<String,Object> headerMap) throws Exception {
@@ -72,5 +73,21 @@ public class WebSocketStompController {
     public void templateSend(String greeting){
         String text = "[" + System.currentTimeMillis() + "]:" + greeting;
         this.template.convertAndSend("/topic/greetings",text);
+    }
+
+    /**
+     *  1、spring webscoket能识别带”/user”的订阅路径并做出处理，例如，如果浏览器客户端，订阅了’/user/topic/greetings’这条路径
+     *  就会被spring websocket利用UserDestinationMessageHandler进行转化成”/topic/greetings-usererbgz2rq”,”usererbgz2rq”中，
+     *  user是关键字，erbgz2rq是sessionid，这样子就把用户和订阅路径唯一的匹配起来了
+     *  2、如果一个帐号打开了多个浏览器窗口，也就是打开了多个websocket session通道，这时，
+     *  spring webscoket默认会把消息推送到同一个帐号不同的session，你可以利用broadcast = false把避免推送到所有的session中
+     * @param sendUser
+     * @return
+     */
+    @SendToUser(destinations = "/queue/sendUser",broadcast = false)
+    @MessageMapping(value = "/sendUser")
+    public String sendUser(String sendUser){
+        log.info("sendUser : {}",sendUser);
+        return sendUser;
     }
 }

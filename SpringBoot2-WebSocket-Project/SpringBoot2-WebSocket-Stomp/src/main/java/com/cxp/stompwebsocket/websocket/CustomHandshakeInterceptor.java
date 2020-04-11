@@ -23,7 +23,7 @@ public class CustomHandshakeInterceptor extends HttpSessionHandshakeInterceptor 
         if (getSession(request) != null){
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
             HttpServletRequest httpServletRequest = servletRequest.getServletRequest();
-            attributes.put("userId", httpServletRequest.getParameter("userId"));
+
         }
         return super.beforeHandshake(request,response,wsHandler,attributes);
     }

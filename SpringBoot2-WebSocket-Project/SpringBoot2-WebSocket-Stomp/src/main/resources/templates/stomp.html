@@ -12,6 +12,12 @@
 
 <div id="app">
     <h1>{{title}}</h1>
+
+    <div>
+        <input type="text" id="sendUser" v-model="sendUserTxt"/>
+        <button id="btn" @click="sendUser">sendToUser</button>
+    </div>
+
 </div>
 
 </body>
@@ -29,7 +35,8 @@
             heartbeat: {
                 outgoing: 20000,
                 incoming: 0
-            }
+            },
+            sendUserTxt: ''
         },
         mounted(){
             if ('WebSocket' in window){
@@ -58,12 +65,20 @@
                 this.stompClient.subscribe(this.topic[0] + '/wss/twoWays',function (response) {
                     console.log('/topic/wss/twoWays : === ' + response.body);
                 });
+
+                this.stompClient.subscribe("/user/queue/sendUser", function (response) {
+                    console.log('/user/queue/sendUser : === ' + response.body);
+                });
+
                 this.stompClient.send("/app/wss/hello/张三丰",{}, "Hello, STOMP");
                 this.stompClient.send("/app/wss/twoWays",{}, "黄耀师");
             },
             failConnectWs(error){
                 // 连接失败时（服务器响应 ERROR 帧）的回调方法
                 console.log('连接失败【' + error + '】');
+            },
+            sendUser(){
+                this.stompClient.send("/app/wss/sendUser", {} , this.sendUserTxt);
             }
         }
     });

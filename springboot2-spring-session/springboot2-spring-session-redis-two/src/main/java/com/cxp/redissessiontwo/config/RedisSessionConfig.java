@@ -1,4 +1,4 @@
-package com.cxp.redissession.config;
+package com.cxp.redissessiontwo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -14,9 +14,13 @@ import org.springframework.security.jackson2.SecurityJackson2Modules;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 import org.springframework.session.web.http.CookieHttpSessionIdResolver;
 import org.springframework.session.web.http.DefaultCookieSerializer;
+import org.springframework.session.web.http.SessionEventHttpSessionListenerAdapter;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpSessionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * EnableRedisHttpSession 创建一个名为springSessionRepositoryFilter的Spring Bean，该Bean实现了Filter。
@@ -75,5 +79,17 @@ public class RedisSessionConfig implements ApplicationContextAware, BeanClassLoa
         defaultCookieSerializer.setCookieMaxAge(-1);
         resolver.setCookieSerializer(defaultCookieSerializer);
         return resolver;
+    }
+
+    /**
+     * session监听
+     * @return
+     */
+    @Bean
+    public SessionEventHttpSessionListenerAdapter listenerAdapter(){
+        List<HttpSessionListener> listeners = new ArrayList<>(2);
+        listeners.add(new CustomSessionListener());
+        SessionEventHttpSessionListenerAdapter adapter = new SessionEventHttpSessionListenerAdapter(listeners);
+        return adapter;
     }
 }

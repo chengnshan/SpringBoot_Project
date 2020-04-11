@@ -1,5 +1,6 @@
 package com.cxp.stompwebsocket.config;
 
+import com.cxp.stompwebsocket.websocket.CustomHandshakeInterceptor;
 import com.cxp.stompwebsocket.websocket.MyChannelInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
@@ -31,8 +32,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // 增加一个入口节点，并开其sockjs的支持，和相关的配置
         //  /stomp是WebSocket（或SockJS）客户端为WebSocket握手需要连接到的端点的HTTP URL
         registry.addEndpoint("/stomp")
-                .setAllowedOrigins("http://localhost");
-//                .addInterceptors(new CustomHandshakeInterceptor())
+                .setAllowedOrigins("http://localhost")
+                .addInterceptors(new CustomHandshakeInterceptor());
 
         registry.addEndpoint("/socketJs/stomp").setAllowedOrigins("*").withSockJS()
 
@@ -58,7 +59,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app")
                 //
                 .setUserDestinationPrefix("/user")
-                .setPathMatcher(new AntPathMatcher("/"));
+                .setPathMatcher(new AntPathMatcher("/"))
+                .setPreservePublishOrder(true);
 
         // 使用内置的消息代理进行订阅和广播，并将destination header 以/topic或/queue开头的消息路由到代理
         registry.enableSimpleBroker("/topic", "/queue");

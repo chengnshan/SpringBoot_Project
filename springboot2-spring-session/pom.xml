@@ -18,6 +18,8 @@
   <modules>
       <module>springboot2-spring-session-redis</module>
       <module>springboot2-spring-session-redis-two</module>
+      <module>springboot2-spring-session-websocket</module>
+      <module>springboot2-spring-session-jdbc</module>
   </modules>
 
   <properties>

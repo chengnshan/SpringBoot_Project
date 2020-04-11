@@ -57,7 +57,7 @@
             },
             submitForm() {
                 console.log(this.form);
-                this.Post('/redis/login', {"username": this.form.username, "password": this.form.password});
+                this.Post('/redis-two/login', {"username": this.form.username, "password": this.form.password});
             },
             /*
             *功能： 模拟form表单的提交
