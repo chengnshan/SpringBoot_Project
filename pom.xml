@@ -47,6 +47,7 @@
         <module>springboot-h2-database</module>
         <module>springboot2-spring-session</module>
         <module>SpringBoot2-WebSocket-Project</module>
+        <module>springboot2-mongodb</module>
     </modules>
 
 </project>

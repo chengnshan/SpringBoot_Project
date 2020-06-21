@@ -1,0 +1,17 @@
+server:
+  port: 8200
+  servlet:
+    context-path: /monogodb-basic
+
+spring:
+  data:
+    mongodb:
+      host: 192.168.8.113
+      port: 27017
+      username: root
+      password: '123456'
+      database: chengxp
+#多个IP集群的配置：
+#spring.data.mongodb.uri=mongodb://user:secret@mongo1.example.com:12345,mongo2.example.com:23456/test
+
+
