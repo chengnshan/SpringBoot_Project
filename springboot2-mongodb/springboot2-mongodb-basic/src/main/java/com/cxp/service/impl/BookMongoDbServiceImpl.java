@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author : cheng
@@ -28,15 +31,32 @@ public class BookMongoDbServiceImpl implements BookMongoDbService {
      */
     @Override
     public String saveObj(Book book) {
-        book.setCreateTime(new Date());
-        book.setUpdateTime(new Date());
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        String now = LocalDateTime.now().format(dateTimeFormatter);
+        book.setCreateTime(now);
+        book.setUpdateTime(now);
         //调用bookMongoDbDao父类中的添加方法
         bookMongoDbDao.save(book);
         return "添加成功";
     }
 
     @Override
-    public List<Book> list(Book book) {
+    public List<Book> listByBook(Book book) {
         return bookMongoDbDao.queryList(book);
+    }
+
+    @Override
+    public List<Book> list() {
+        return bookMongoDbDao.list();
+    }
+
+    @Override
+    public long deleteById(String id) {
+        return bookMongoDbDao.deleteById(id);
+    }
+
+    @Override
+    public long deleteByProperty(Book book) {
+        return bookMongoDbDao.deleteByProperty(book);
     }
 }

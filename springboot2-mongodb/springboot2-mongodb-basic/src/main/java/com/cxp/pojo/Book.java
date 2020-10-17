@@ -3,6 +3,7 @@ package com.cxp.pojo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -15,6 +16,7 @@ import java.util.Date;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@Document(collection = "book")
 public class Book {
     @Id
     private String id;
@@ -28,8 +30,8 @@ public class Book {
     //出版社
     private String publish;
     //创建时间
-    private Date createTime;
+    private String createTime;
     //修改时间
 //    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8",locale = "zh")
-    private Date updateTime;
+    private String updateTime;
 }

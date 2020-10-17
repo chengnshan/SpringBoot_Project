@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+  #  url: jdbc:oracle:thin:@//192.168.111.143:1521:orcl
+    url: jdbc:oracle:thin:@//192.168.8.113:1521/orcl.168.111.140
+    username: system
+    password: 3225230
+
+# Logger Config
+logging:
+  level:
+    com.cxp.springboot2mybatisplus: debug
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml

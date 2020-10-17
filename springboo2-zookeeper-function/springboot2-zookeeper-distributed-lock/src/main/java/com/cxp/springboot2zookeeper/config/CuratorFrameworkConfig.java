@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.zookeeper.lock.ZookeeperLockRegistry;
 import org.springframework.util.StringUtils;
 
+import java.util.UUID;
+
 /**
  * @author 程
  * @date 2019/7/29 下午3:34
@@ -28,7 +30,7 @@ public class CuratorFrameworkConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CuratorFrameworkConfig.class);
 
-    @Value("${zk.url}")
+    @Value("${zk.url:10.211.55.6:2181}")
     private String zkUrl;
 
     @Value("${zk.cluster.url}")
@@ -43,9 +45,13 @@ public class CuratorFrameworkConfig {
     @Value(("${lockPath}"))
     private String lockPath ;
 
+    /**
+     * 使用spring integration与zookeeper结合，实现zookeeper分布式锁
+     * @param curatorFramework Curator连接客户端
+     * @return
+     */
     @Bean
     public ZookeeperLockRegistry zookeeperLockRegistry(CuratorFramework curatorFramework) {
-
         return new ZookeeperLockRegistry(curatorFramework, lockPath);
     }
 

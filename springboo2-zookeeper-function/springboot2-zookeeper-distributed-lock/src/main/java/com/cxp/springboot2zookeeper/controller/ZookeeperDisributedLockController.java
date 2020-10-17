@@ -2,6 +2,7 @@ package com.cxp.springboot2zookeeper.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.locks.InterProcessLock;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessSemaphoreMutex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +37,10 @@ public class ZookeeperDisributedLockController {
      */
     @RequestMapping(value = "distributedLock")
     public String distributedLock(){
-        String lockName = lockPath + UUID.randomUUID().toString();
 //        log.info("============={} 线程访问开始=========lockName:{}",Thread.currentThread().getName(),lockName);
-        ///TODO 获取分布式锁
-        InterProcessMutex lock = new InterProcessMutex(curatorFramework,lockName);
+        //TODO 获取分布式锁
+        String lockName = lockPath + UUID.randomUUID().toString();
+        InterProcessMutex lock = new InterProcessMutex(curatorFramework,lockPath);
         try{
             //获取锁资源
             boolean flag = lock.acquire(10, TimeUnit.SECONDS);
@@ -48,6 +49,7 @@ public class ZookeeperDisributedLockController {
                 //TODO 获得锁之后可以进行相应的处理  睡一会
                 Thread.sleep(10000);
                 log.info("======获得锁后进行相应的操作======" + Thread.currentThread().getName());
+
                 return new String(curatorFramework.getData().forPath(lockName), Charset.defaultCharset());
             }else{
                 log.info("线程:{}，超时不获取锁了",Thread.currentThread().getName());
@@ -65,6 +67,7 @@ public class ZookeeperDisributedLockController {
         return null;
     }
 
+    /**=================================================================*/
     @Autowired
     private LockRegistry lockRegistry;
 
@@ -85,4 +88,5 @@ public class ZookeeperDisributedLockController {
 
         return "success";
     }
+    /**=================================================================*/
 }

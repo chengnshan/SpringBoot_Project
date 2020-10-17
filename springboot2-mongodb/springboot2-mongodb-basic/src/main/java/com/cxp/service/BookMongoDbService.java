@@ -12,6 +12,11 @@ public interface BookMongoDbService {
 
     String saveObj(Book book) ;
 
-    List<Book> list(Book book);
+    List<Book> listByBook(Book book);
 
+    List<Book> list();
+
+    long deleteById(String id);
+
+    long deleteByProperty(Book book);
 }

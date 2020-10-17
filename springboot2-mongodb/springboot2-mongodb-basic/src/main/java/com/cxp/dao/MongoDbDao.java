@@ -20,7 +20,7 @@ public abstract class MongoDbDao<T> {
     protected Logger logger = LoggerFactory.getLogger(MongoDbDao.class);
 
     @Autowired
-    private MongoTemplate mongoTemplate;
+    protected MongoTemplate mongoTemplate;
 
     /**
      * 反射获取泛型类型
@@ -36,6 +36,16 @@ public abstract class MongoDbDao<T> {
     public void save(T t) {
         logger.info("-------------->MongoDB save start");
         this.mongoTemplate.save(t);
+    }
+
+    public long deleteByProperty(T t){
+        Query query = getQueryByObject(t);
+        return this.mongoTemplate.remove(query,this.getEntityClass()).getDeletedCount();
+    }
+
+    public long deleteById(String id){
+        Query query = new Query(Criteria.where("_id").is(id));
+        return this.mongoTemplate.remove(query,this.getEntityClass()).getDeletedCount();
     }
 
     /***

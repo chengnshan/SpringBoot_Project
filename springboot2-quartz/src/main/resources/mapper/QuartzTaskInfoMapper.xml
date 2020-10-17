@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cxp.springboot2quartz.mapper.QuartzTaskInfoMapper">
+<mapper namespace="com.cxp.springquartz.mapper.QuartzTaskInfoMapper">
 
-    <select id="listJobAndTriggerDetails" resultType="com.cxp.springboot2quartz.pojo.QuartzTaskInfo">
+    <select id="listJobAndTriggerDetails" resultType="com.cxp.springquartz.pojo.QuartzTaskInfo">
         SELECT
             QRTZ_JOB_DETAILS.JOB_NAME,
             QRTZ_JOB_DETAILS.JOB_GROUP,

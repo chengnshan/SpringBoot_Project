@@ -65,25 +65,25 @@
     <el-dialog title="添加任务" :visible.syn="dialogFormVisible">
         <el-form :model="form">
             <el-form-item label="任务名称" label-width="120px" style="width:65%">
-                <el-input v-model="form.jobName" auto-complete="off" placeholder="请输入任务名称"></el-input>
+                <el-input v-model.trim="form.jobName" auto-complete="off" placeholder="请输入任务名称"></el-input>
             </el-form-item>
             <el-form-item label="任务分组" label-width="120px" style="width:65%">
-                <el-input v-model="form.jobGroup" auto-complete="off" placeholder="请输入任务分组"></el-input>
+                <el-input v-model.trim="form.jobGroup" auto-complete="off" placeholder="请输入任务分组"></el-input>
             </el-form-item>
             <el-form-item label="触发器名称" label-width="120px" style="width:65%">
-                <el-input v-model="form.triggerName" auto-complete="off" placeholder="请输入触发器名称"></el-input>
+                <el-input v-model.trim="form.triggerName" auto-complete="off" placeholder="请输入触发器名称"></el-input>
             </el-form-item>
             <el-form-item label="触发器分组" label-width="120px" style="width:65%">
-                <el-input v-model="form.triggerGroup" auto-complete="off" placeholder="请输入触发器分组"></el-input>
+                <el-input v-model.trim="form.triggerGroup" auto-complete="off" placeholder="请输入触发器分组"></el-input>
             </el-form-item>
             <el-form-item label="表达式" label-width="120px" style="width:65%">
-                <el-input v-model="form.cronExpression" auto-complete="off" placeholder="请输入时间表达式"></el-input>
+                <el-input v-model.trim="form.cronExpression" auto-complete="off" placeholder="请输入时间表达式"></el-input>
             </el-form-item>
             <el-form-item label="任务类名全路径" label-width="120px" style="width:65%">
-                <el-input v-model="form.jobClassName" auto-complete="off" placeholder="任务类名全路径"></el-input>
+                <el-input v-model.trim="form.jobClassName" auto-complete="off" placeholder="任务类名全路径"></el-input>
             </el-form-item>
             <el-form-item label="任务描述" label-width="120px" style="width:65%">
-                <el-input v-model="form.jobDescription" auto-complete="off" placeholder="请输入任务描述"></el-input>
+                <el-input v-model.trim="form.jobDescription" auto-complete="off" placeholder="请输入任务描述"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -95,7 +95,7 @@
     <el-dialog title="修改任务" :visible.syn="updateFormVisible">
         <el-form :model="updateform">
             <el-form-item label="表达式" label-width="120px" style="width:75%">
-                <el-input v-model="updateform.cronExpression" auto-complete="off"></el-input>
+                <el-input v-model.trim="updateform.cronExpression" auto-complete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -171,7 +171,8 @@
 
             //单行删除
             handleDelete: function(index, row) {
-                this.$http.post('/job/deleteJob',{"jobName":row.jobName,"jobGroup":row.jobGroup,"id":row.id},
+                this.$http.post('/job/deleteJob',{"jobName":row.jobName,"jobGroup":row.jobGroup,"id":row.id,
+                        "triggerName":row.triggerName,"triggerGroup":row.triggerGroup},
                     {emulateJSON: true}).then(function(res){
                     this.loadData( this.currentPage, this.pageSize);
                 },function(){

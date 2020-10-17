@@ -16,6 +16,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+import java.security.Principal;
 import java.util.Map;
 
 /**
@@ -78,6 +79,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setClientLogin("guest").setClientPasscode("guest");
     }
 
+    /**
+     * 配置客户端入站通道拦截器
+     * @param registration
+     */
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
         registration.interceptors(new MyChannelInterceptor(),
@@ -101,6 +106,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registration.taskExecutor().corePoolSize(4).maxPoolSize(8).keepAliveSeconds(60);
     }
 
+    /**
+     * 将用于向WebSocket客户端出站消息的配置。默认情况下，通道由大小为1的线程池支持。建议自定义线程池
+     * @param registration
+     */
     @Override
     public void configureClientOutboundChannel(ChannelRegistration registration) {
         registration.interceptors(new MyChannelInterceptor());

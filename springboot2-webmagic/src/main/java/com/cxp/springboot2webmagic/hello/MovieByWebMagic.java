@@ -3,7 +3,10 @@ package com.cxp.springboot2webmagic.hello;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
+import us.codecraft.webmagic.downloader.HttpClientDownloader;
 import us.codecraft.webmagic.processor.PageProcessor;
+import us.codecraft.webmagic.proxy.Proxy;
+import us.codecraft.webmagic.proxy.SimpleProxyProvider;
 
 /**
  * @author : cheng
@@ -48,7 +51,10 @@ public class MovieByWebMagic implements PageProcessor {
     }
 
     public static void main(String[] args) {
-        Spider.create(new MovieByWebMagic()).addUrl("https://www.dytt8.net/index.htm")
+        HttpClientDownloader downloader = new HttpClientDownloader();
+        downloader.setProxyProvider(SimpleProxyProvider.from(new Proxy("112.84.178.21",8888)));
+
+        Spider.create(new MovieByWebMagic()).addUrl("https://www.dytt8.net/index0.htm")
                 .run();
     }
 

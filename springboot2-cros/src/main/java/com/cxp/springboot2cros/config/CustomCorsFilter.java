@@ -7,6 +7,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 自定义跨域过滤器继承CorsFilter，从而实现跨域请求
@@ -31,7 +32,8 @@ public class CustomCorsFilter extends CorsFilter {
         //放行哪些原始请求头部信息
         config.addAllowedHeader("*");
         //暴露哪些头部信息
-        config.addExposedHeader("*");
+        List<String> exposedHeaders = Arrays.asList("x-auth-token", "content-type", "X-Requested-With", "XMLHttpRequest");
+        config.setExposedHeaders(exposedHeaders);
         config.setMaxAge(36000L);
         //放行哪些请求方式
         config.setAllowedMethods(Arrays.asList("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS"));

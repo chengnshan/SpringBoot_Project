@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author : cheng
@@ -28,15 +31,31 @@ public class BookMongodbController {
         return bookMongoDbService.saveObj(book);
     }
 
-    @RequestMapping(value = "/book/list")
-    public List<Book> list(@RequestBody Book book) {
-        return bookMongoDbService.list(book);
+    @RequestMapping(value = "/book/listByBook")
+    public List<Book> listByBook(@RequestBody Book book) {
+        return bookMongoDbService.listByBook(book);
     }
 
+    @RequestMapping(value = "/book/list")
+    public List<Book> list() {
+        return bookMongoDbService.list();
+    }
+
+    @RequestMapping(value = "/book/deleteById")
+    public long deleteById(String id){
+        return bookMongoDbService.deleteById(id);
+    }
+
+    @RequestMapping(value = "/book/deleteByProperty")
+    public long deleteByProperty(Book book){
+        return bookMongoDbService.deleteByProperty(book);
+    }
 
     public static void main(String[] args) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        String now = LocalDateTime.now().format(dateTimeFormatter);
         Book book = new Book("123",56,"红楼梦","贾宝玉和","工业出版社",
-                Calendar.getInstance().getTime(),Calendar.getInstance().getTime());
+                now,now);
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 //序列化null

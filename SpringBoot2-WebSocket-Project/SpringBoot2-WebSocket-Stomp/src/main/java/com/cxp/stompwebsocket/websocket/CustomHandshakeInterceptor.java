@@ -25,12 +25,14 @@ public class CustomHandshakeInterceptor extends HttpSessionHandshakeInterceptor 
             HttpServletRequest httpServletRequest = servletRequest.getServletRequest();
 
         }
+        System.out.println("CustomHandshakeInterceptor beforeHandshake !");
         return super.beforeHandshake(request,response,wsHandler,attributes);
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler,
                                Exception exception) {
+        System.out.println("CustomHandshakeInterceptor afterHandshake !");
         super.afterHandshake(request,response,wsHandler,exception);
     }
 
