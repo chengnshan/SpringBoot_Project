@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" th:src="@{/webjars/vue/2.6.11/vue.js}"></script>
+    <!--    <script type="text/javascript" src="webjars/bootstrap/4.4.1-1/js/bootstrap.js"></script>-->
+    <link rel="stylesheet" th:href="@{/webjars/element-ui/2.13.0/lib/theme-chalk/index.css}"/>
+    <script type="text/javascript" th:src="@{/webjars/element-ui/2.13.0/lib/index.js}"></script>
+    <script type="text/javascript" src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+    <script type="text/javascript" src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <h1>{{content}}</h1>
+</div>
+</body>
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            content: '这是index页面啊!',
+            wsUrl: '/stomp',
+            //headers表示客户端的认证信息,若无需认证，直接使用空对象 “{}” 即可
+            headers: {username: 'username', password: 'password'},
+            websocket: null,
+            stompClient: null,
+            topic: ['/topic', '/queue'],
+            heartbeat: {
+                outgoing: 20000,
+                incoming: 0
+            }
+        },
+        mounted() {
+            if ('WebSocket' in window) {
+                this.websocket = new WebSocket("ws://localhost:8101" + this.wsUrl);
+            } else {
+                // 建立连接对象（还未发起连接）
+                this.websocket = new SockJS("http://localhost:8101/socketJs" + this.wsUrl);
+            }
+            // 获取 STOMP 子协议的客户端对象
+            this.stompClient = Stomp.over(this.websocket);
+            this.stompClient.heartbeat.outgoing = this.heartbeat.outgoing;
+            this.stompClient.heartbeat.incoming = this.heartbeat.incoming;
+            // 向服务器发起websocket连接并发送CONNECT帧
+            this.stompClient.connect(this.headers, this.connectWs, this.failConnectWs);
+        },
+        methods: {
+            connectWs(frame) {
+                // 连接成功时（服务器响应 CONNECTED 帧）的回调方法
+                console.log('已连接【' + frame + '】');
+                this.stompClient.subscribe(this.topic[0] + '/greetings',function (response) {
+                    console.log('/topic/greetings : === ' + response.body);
+                });
+            },
+            failConnectWs(error) {
+                // 连接失败时（服务器响应 ERROR 帧）的回调方法
+                console.log('连接失败【' + error + '】');
+            }
+        }
+    });
+
+</script>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+</style>
+</html>
