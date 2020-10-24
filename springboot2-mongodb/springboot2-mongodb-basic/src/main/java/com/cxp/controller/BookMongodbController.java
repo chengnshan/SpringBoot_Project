@@ -4,15 +4,16 @@ import com.cxp.pojo.Book;
 import com.cxp.service.BookMongoDbService;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -21,6 +22,7 @@ import java.util.Locale;
  * @date : 2020-06-21 20:11
  */
 @RestController
+@Log
 public class BookMongodbController {
 
     @Autowired
@@ -33,6 +35,12 @@ public class BookMongodbController {
 
     @RequestMapping(value = "/book/listByBook")
     public List<Book> listByBook(@RequestBody Book book) {
+        return bookMongoDbService.listByBook(book);
+    }
+
+    @RequestMapping(value = "/book/listByBookForm")
+    public List<Book> listByBookForm(Book book, HttpServletRequest request) {
+        log.info(request.getRemoteHost());
         return bookMongoDbService.listByBook(book);
     }
 
@@ -54,8 +62,7 @@ public class BookMongodbController {
     public static void main(String[] args) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         String now = LocalDateTime.now().format(dateTimeFormatter);
-        Book book = new Book("123",56,"红楼梦","贾宝玉和","工业出版社",
-                now,now);
+        Book book = new Book("123",56,"红楼梦","贾宝玉和","工业出版社", now, now);
 
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                 //序列化null

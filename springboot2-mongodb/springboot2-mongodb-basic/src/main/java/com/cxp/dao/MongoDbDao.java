@@ -55,7 +55,7 @@ public abstract class MongoDbDao<T> {
      */
     public T queryById(Integer id) {
         Query query = new Query(Criteria.where("_id").is(id));
-        logger.info("-------------->MongoDB find start");
+        logger.info("-------------->MongoDB find by id start");
         return this.mongoTemplate.findOne(query, this.getEntityClass());
     }
 
@@ -67,7 +67,7 @@ public abstract class MongoDbDao<T> {
      */
     public List<T> queryList(T object) {
         Query query = getQueryByObject(object);
-        logger.info("-------------->MongoDB find start");
+        logger.info("-------------->MongoDB find list start");
         return mongoTemplate.find(query, this.getEntityClass());
     }
 
@@ -79,7 +79,7 @@ public abstract class MongoDbDao<T> {
      */
     public T queryOne(T object) {
         Query query = getQueryByObject(object);
-        logger.info("-------------->MongoDB find start");
+        logger.info("-------------->MongoDB find one start");
         return mongoTemplate.findOne(query, this.getEntityClass());
     }
 
