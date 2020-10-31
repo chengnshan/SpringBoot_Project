@@ -23,8 +23,7 @@
         <module>springboot-thymeleaf</module>
         <module>springboot2-filter</module>
         <module>springboot2-upload</module>
-        <module>springboot2-rabbitmq</module>
-        <module>springboot2-rabbitmq-xml</module>
+        <module>springboot2-rabbitmq-function</module>
         <module>springboot2-Jasypt</module>
         <module>springboot2-multidatasource</module>
         <module>springboot2-rsa-aes</module>
