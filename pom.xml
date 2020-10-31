@@ -46,6 +46,7 @@
         <module>springboo2-zookeeper-function</module>
         <module>springboot2-redis-collection</module>
         <module>SpringBoot2-Nacos-Seata</module>
+        <module>springboot2-web-function</module>
     </modules>
 
 </project>
