@@ -30,8 +30,7 @@
         <module>springboot2-cros</module>
         <module>springboot2-shiro</module>
         <module>springboot2-actuator</module>
-        <module>springboot2-kafka</module>
-        <module>springboot2-kafka-basic</module>
+        <module>springboot2-kafka-function</module>
         <module>springboo2-admin-server</module>
         <module>springboot2-netty-function</module>
         <module>springboot2-jsp-shiro</module>
