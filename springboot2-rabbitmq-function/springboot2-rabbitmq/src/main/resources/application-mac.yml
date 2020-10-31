@@ -1,0 +1,84 @@
+server:
+  port: 8101
+  servlet:
+    context-path: /rabbitmq
+spring:
+  application:
+    name: springboot2-rabbitmq
+  rabbitmq:
+    host: 192.168.153.136
+    port: 5672
+    username: admin
+    password: admin
+    virtual-host: /
+    dynamic: true #是否创建AmqpAdmin bean. 默认为: true)
+    #生产端
+    publisher-confirms: true  # 开启发送确认
+    publisher-returns: true # 开启发送失败退回
+    #消费端
+    listener:
+      direct:
+        acknowledge-mode: manual  # 开启ACK
+        retry:
+          enabled: true #消费者端的重试
+        prefetch: 1
+      simple:
+        retry:
+          enabled: true #消费者端的重试
+          max-attempts: 5  #尝试消费消息的次数
+          initial-interval: 2000ms #消费者重复消费一条消息的尝试时间间隔
+          stateless: true  #重试是无状态的还是有状态的
+        acknowledge-mode: manual
+        # 指定一个请求能处理多少个消息，如果有事务的话，必须大于等于transaction数量.
+        prefetch: 1
+        #指定一个事务处理的消息数量，最好是小于等于prefetch的数量.
+        transaction-size: 1
+        auto-startup: true
+        #concurrency设置的是对每个listener在初始化的时候设置的并发消费者的个数
+        concurrency: 2
+        #指定最大的消费者数量.
+        max-concurrency: 4
+
+    template:
+      reply-timeout: 10000ms
+      retry:
+        enabled: true #设置为true的时候RabbitTemplate(生产端)能够实现重试
+        initial-interval: 2000ms #第一次与第二次发布消息的时间间隔
+        max-attempts: 5   #尝试发布消息的最大数量
+        max-interval: 10000ms  #尝试发布消息的最大时间间隔 10000
+        multiplier: 2.0 #一次尝试时间间隔的乘数
+      mandatory: true
+
+  datasource:
+    url: jdbc:mysql://192.168.153.136:3306/springboot2-project?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+custom:
+  rabbitmq:
+    queue:
+      direct: directQueue
+      topic1: topicQueue1
+      topic2: topicQueue2
+      headers: headersQueue
+      fanout1: fanoutQueue1
+      fanout2: fanoutQueue2
+    exchange:
+      direct: directExchange
+      topic: topicExchange
+      header: headersExchange
+      fanout: fanoutExchange
+    directRoutingKey: key.direct
+    topicRoutingKey1: key.topic
+    #其中路由键中*代表一个字符，#代表一个或多个字符
+    topicRoutingKey2: key.#
+    header: header_value
+
+jpg:
+  file:
+    path: /Volumes/Passport_2/study_practice_file/images/to/
+#此外一定是配置消费端实体类所在包,才能映射成功
+scan:
+  idClass:
+    packageName: com.cxp.springboot2rabbitmq.rabbitConsumer.pojo

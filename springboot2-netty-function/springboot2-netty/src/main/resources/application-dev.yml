@@ -1,0 +1,10 @@
+server:
+  port: 8208
+  servlet:
+    context-path: /springboot2-netty
+
+netty:
+  port: 10999
+  bossThreadCount: 10
+  workerThreadCount: 10
+  soBacklog: 1024

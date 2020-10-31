@@ -1,0 +1,72 @@
+一、概念
+    AMQP，即Advanced Message Queuing Protocol，高级消息队列协议，是应用层协议的一个开放标准，为面向消息的中间件设计,
+由内在高并发的erlanng语言开发，用在实时的对可靠性要求比较高的消息传递上。
+    RabbitMQ是实现AMQP（高级消息队列协议）的消息中间件的一种。主要是用来实现应用程序的异步和解耦、流量削峰。
+
+    RabbitMQ比较重要的几个概念：
+        虚拟主机：RabbitMQ支持权限控制，但是最小控制粒度为虚拟主机。一个虚拟主机可以包含多个交换机、队列、绑定。
+        交换机：RabbitMQ分发器，根据不同的策略将消息分发到相关的队列。
+        队列：缓存消息的容器。
+        绑定：设置交换机与队列的关系。
+
+    Exchange
+        交换机，生产者生产的消息先经过交换机，再路由到一个或多个Queue，这个过程通过binding key完成
+        Exchange交换类别
+            fanout：会把所有发到Exchange的消息路由到所有和它绑定的Queue。
+            direct：会把消息路由到routing key和binding key完全相同的Queue，不相同的丢弃。
+            topic：direct是严格匹配，那么topic就算模糊匹配，routing key和binding key都用.来区分单词串，比如A.B.C，匹配任意单词，#匹配任意多个或0个单词，比如。B.*可以匹配到A.B.C
+            headers：不依赖routing key和binding key，通过对比消息属性中的headers属性，对比Exchange和Queue绑定时指定的键值对，相同就路由过来
+
+
+Json消息转换器(Jackson2JsonMessageConverter)注意：
+    如果发送方和接收方都用Jackson2JsonMessageConverter的,那么消费者在接收消息把json转换为对象时,对象的全路径名
+ 必须和生产者一致，否则会转换失败。我们发现生产者和消费者的耦合度太高,优化方法:
+    在消费端配置映射:
+        @Bean
+        public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory){
+            SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+             container.setConnectionFactory(connectionFactory);
+             container.setQueueNames("zhihao.miao.order");
+
+             MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageHandler());
+             //指定Json转换器
+             Jackson2JsonMessageConverter jackson2JsonMessageConverter =new Jackson2JsonMessageConverter();
+
+             //消费端配置映射
+             Map<String, Class<?>> idClassMapping = new HashMap<>();
+             idClassMapping.put("order",Order.class);
+             idClassMapping.put("user",User.class);
+
+             DefaultJackson2JavaTypeMapper jackson2JavaTypeMapper = new DefaultJackson2JavaTypeMapper();
+             jackson2JavaTypeMapper.setIdClassMapping(idClassMapping);
+
+             System.out.println("在jackson2JsonMessageConverter转换器中指定映射配置");
+             jackson2JsonMessageConverter.setJavaTypeMapper(jackson2JavaTypeMapper);
+             adapter.setMessageConverter(jackson2JsonMessageConverter);
+
+             //设置处理器的消费消息的默认方法
+             adapter.setDefaultListenerMethod("onMessage");
+             container.setMessageListener(adapter);
+
+             return container;
+        }
+
+    然后在生产端就可以指定对应的key，而不需要再去指定全类名了:
+        MessageProperties messageProperties = new MessageProperties();
+        messageProperties.setContentType("application/json");
+        //指定消费端配置的key值就行了
+        messageProperties.getHeaders().put("__TypeId__","user");
+        Message message = new Message(json.getBytes(),messageProperties);
+
+        rabbitTemplate.send("","zhihao.miao.order",message);
+
+    发送消息的时候,TypeId的值可以是java对象全称，也可以是映射的key,当消费者有配置映射key的时候，
+生产者既可以指定java对象全称，又可以是映射的key。如果消费者没有配置映射key，则只能指定java对象全称。
+
+
+RabbitMQ死信队列
+    什么是死信呢？什么样的消息会变成死信呢？
+        1、消息被拒绝（basic.reject或basic.nack）并且requeue=false.
+        2、消息TTL过期。
+        3、队列达到最大长度（队列满了，无法再添加数据到mq中）。
+

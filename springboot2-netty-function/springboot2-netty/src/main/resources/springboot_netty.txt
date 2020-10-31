@@ -1,0 +1,32 @@
+Springboot启动Netty服务端代码:
+
+方法一（使用CommandLineRunner）：
+        CommandLineRunner #run()
+        这里主要是通过CommandLineRunner 接口的run方法，实现在项目启动后执行的功能，SpringBoot提供的一种简单的实现方案就是添加一个model并实现
+    CommandLineRunner接口，实现功能的代码放在实现的run方法中。
+        addShutdownHook()
+        而 Runtime.getRuntime().addShutdownHook(shutdownHook); 这个方法的意思就是在jvm中增加一个关闭的钩子，当jvm关闭的时候，会执行系统中
+    已经设置的所有通过方法addShutdownHook添加的钩子，当系统执行完这些钩子后，jvm才会关闭。所以这些钩子可以在jvm关闭的时候进行内存清理、对象销毁等操作。
+
+方法二（使用ServletContextListener）：
+    第一步：实现ServletContextListener接口
+    第二步：实现类上添加注解@WebListener
+    第三步：在SpringBoot启动类上添加注解@ServletComponentScan
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
