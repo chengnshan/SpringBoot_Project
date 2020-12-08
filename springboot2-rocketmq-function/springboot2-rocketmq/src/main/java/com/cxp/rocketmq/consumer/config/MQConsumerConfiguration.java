@@ -52,9 +52,10 @@ public class MQConsumerConfiguration {
          * 如果非第一次启动，那么按照上次消费的位置继续消费
          */
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_LAST_OFFSET);
-        /** 设置消费模型，集群还是广播，默认为集群*/
+        // 设置消费模型，集群还是广播，默认为集群*/
         //consumer.setMessageModel(MessageModel.CLUSTERING);
-        /** 设置一次消费消息的条数，默认为1条*/
+
+        // 设置一次消费消息的条数，默认为1条*/
         consumer.setConsumeMessageBatchMaxSize(consumeMessageBatchMaxSize);
         try {
             /**

@@ -1,4 +1,4 @@
-package com.cxp.rocketmq.Producer.config;
+package com.cxp.rocketmq.producer.config;
 
 import lombok.extern.log4j.Log4j2;
 import org.apache.rocketmq.client.exception.MQClientException;
