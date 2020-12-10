@@ -20,21 +20,19 @@ public class MQProducerConfiguration {
      */
     @Value("${rocketmq.producer.groupName}")
     private String groupName;
+
     @Value("${rocketmq.producer.namesrvAddr}")
     private String namesrvAddr;
-    /**
-     * 消息最大大小，默认4M
-     */
+
+    /*** 消息最大大小，默认4M*/
     @Value("${rocketmq.producer.maxMessageSize}")
     private Integer maxMessageSize ;
-    /**
-     * 消息发送超时时间，默认3秒
-     */
+
+    /*** 消息发送超时时间，默认3秒*/
     @Value("${rocketmq.producer.sendMsgTimeout}")
     private Integer sendMsgTimeout;
-    /**
-     * 消息发送失败重试次数，默认2次
-     */
+
+    /*** 消息发送失败重试次数，默认2次*/
     @Value("${rocketmq.producer.retryTimesWhenSendFailed}")
     private Integer retryTimesWhenSendFailed;
 
